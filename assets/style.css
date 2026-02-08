@@ -11,18 +11,34 @@ body {
   color: #fff;
 }
 
-/* Header */
-header {
+/* Top navigation bar with logo */
+.top-nav {
   width: 100%;
-  padding: 20px;
-  text-align: center;
+  padding: 10px 20px;
   background: #1e1e1e;
+  display: flex;
+  align-items: center;
   box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
-header h1 {
-  font-size: 2.2rem;
-  color: #4cafeb;
+.top-nav .logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.top-nav .logo {
+  height: 50px; /* logo size */
+  object-fit: contain;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.top-nav .logo:hover {
+  transform: scale(1.05);
 }
 
 /* Homepage grid */
@@ -70,7 +86,7 @@ header h1 {
 /* Game page layout */
 .game-page {
   display: flex;
-  height: 100vh;
+  height: calc(100vh - 70px); /* subtract header height */
   background: #121212;
 }
 
@@ -85,73 +101,6 @@ iframe {
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.5);
   border: none;
-}
-
-/* Sidebar styling */
-.sidebar {
-  flex: 1;
-  background: #1e1e1e;
-  padding: 20px;
-  overflow-y: auto;
-  border-left: 1px solid #333;
-}
-
-.sidebar h3 {
-  margin-bottom: 10px;
-  color: #4cafeb;
-  font-size: 1.2rem;
-}
-
-.sidebar ul {
-  list-style: none;
-}
-
-.sidebar ul li {
-  margin-bottom: 8px;
-}
-
-/* Updated sidebar icons & text */
-.sidebar ul li a {
-  display: flex;
-  align-items: center;
-  gap: 8px;           /* smaller gap between icon + text */
-  padding: 4px 6px;   /* tighter padding */
-  border-radius: 6px;
-  transition: 0.2s;
-  color: #fff;
-  text-decoration: none;
-}
-
-.sidebar ul li a img {
-  width: 30px;       /* smaller icon */
-  height: 30px;
-  border-radius: 6px;
-  object-fit: cover;
-}
-
-.sidebar ul li a span {
-  flex: 1;
-  font-size: 0.9rem; /* slightly smaller font */
-}
-
-.sidebar ul li a:hover {
-  background: #4cafeb;
-  color: #121212;
-  transform: scale(1.05);
-}
-
-/* Responsive for mobile */
-@media (max-width: 800px) {
-  .game-page {
-    flex-direction: column;
-  }
-  .sidebar {
-    width: 100%;
-    height: auto;
-    border-left: none;
-    border-top: 1px solid #333;
-  }
-
 }
 
 /* Game controls panel below iframe */
@@ -179,5 +128,69 @@ iframe {
   transform: scale(1.05);
 }
 
+/* Sidebar styling */
+.sidebar {
+  flex: 1;
+  background: #1e1e1e;
+  padding: 20px;
+  overflow-y: auto;
+  border-left: 1px solid #333;
 }
 
+.sidebar h3 {
+  margin-bottom: 10px;
+  color: #4cafeb;
+  font-size: 1.2rem;
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.sidebar ul li {
+  margin-bottom: 8px;
+}
+
+/* Sidebar icons & text */
+.sidebar ul li a {
+  display: flex;
+  align-items: center;
+  gap: 8px;           /* gap between icon + text */
+  padding: 4px 6px;   /* padding */
+  border-radius: 6px;
+  transition: 0.2s;
+  color: #fff;
+  text-decoration: none;
+}
+
+.sidebar ul li a img {
+  width: 30px;       /* smaller icon */
+  height: 30px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.sidebar ul li a span {
+  flex: 1;
+  font-size: 0.9rem; /* slightly smaller text */
+}
+
+.sidebar ul li a:hover {
+  background: #4cafeb;
+  color: #121212;
+  transform: scale(1.05);
+}
+
+/* Responsive for mobile */
+@media (max-width: 800px) {
+  .game-page {
+    flex-direction: column;
+    height: auto;
+  }
+  .sidebar {
+    width: 100%;
+    height: auto;
+    border-left: none;
+    border-top: 1px solid #333;
+  }
+}
