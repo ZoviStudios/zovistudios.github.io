@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Best FREE Online Games On Zovi Games ┃ Play NOW!</title>
+  <title>Zovi Arcade</title>
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -12,19 +12,28 @@
   </header>
 
   <main>
-    <div class="game-list">
-      <a href="game.html?game=geometry-dash" class="game-card">
-        <img src="assets/geometry-dash-thumb.png" alt="Geometry Dash">
-        <span>Geometry Dash</span>
-      </a>
-
-      <a href="game.html?game=slope" class="game-card">
-        <img src="assets/slope-thumb.png" alt="Slope">
-        <span>Slope</span>
-      </a>
-
-      <!-- Add more games here -->
-    </div>
+    <div class="game-list" id="game-list"></div>
   </main>
+
+  <script>
+    const games = [
+      { name: "Geometry Dash", file: "geometry-dash", thumb: "geometry-dash-thumb.png" },
+      { name: "Slope", file: "slope", thumb: "slope-thumb.png" },
+      // add more games here
+    ];
+
+    const gameList = document.getElementById("game-list");
+
+    games.forEach(game => {
+      const card = document.createElement("a");
+      card.href = `game.html?game=${game.file}`;
+      card.className = "game-card";
+      card.innerHTML = `
+        <img src="assets/${game.thumb}" alt="${game.name}">
+        <span>${game.name}</span>
+      `;
+      gameList.appendChild(card);
+    });
+  </script>
 </body>
 </html>
