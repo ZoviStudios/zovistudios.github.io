@@ -2,50 +2,48 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Zovi Games</title>
+  <title>Zovi Games – The BEST ONLINE Browser Games</title>
   <link rel="stylesheet" href="assets/style.css">
   <link rel="icon" type="image/png" href="./assets/favicon.png">
+  <script src="assets/script.js" defer></script>
 </head>
-
 <body>
-
   <!-- Top Navigation -->
   <div class="top-nav">
-  <a href="index.html" class="logo-link">
-    <img src="./assets/logo.png" class="logo">
-  </a>
-  
-  <input type="text" id="search-input" placeholder="Search games..." class="search-bar">
-</div>
+    <a href="index.html" class="logo-link">
+      <img src="./assets/logo.png" class="logo" alt="Zovi Games">
+    </a>
+    <input type="text" id="search-input" placeholder="Search games..." class="search-bar">
+  </div>
 
   <main>
-
-    <!-- Ad banner -->
-    <div class="ad-banner">
-      <!-- Paste your AdSense ad unit here -->
+    <!-- Hero Logo & Tagline -->
+    <div class="hero-logo-container">
+      <img src="./assets/logo.png" class="hero-logo" alt="Zovi Games">
+      <h2 class="site-tagline">The BEST ONLINE Browser Games - Unblocked and Fun!</h2>
     </div>
 
-    <!-- HOT GAMES -->
-    <h2 class="section-title">🔥 HOT GAMES</h2>
+    <!-- Hot Games Section -->
+    <h3 class="section-title">HOT GAMES</h3>
     <div id="hot-games" class="game-list"></div>
 
-    <!-- ALL GAMES -->
-    <h2 class="section-title">🎮 ALL GAMES</h2>
+    <!-- All Games Section -->
+    <h3 class="section-title">ALL GAMES</h3>
     <div id="all-games" class="game-list"></div>
-
   </main>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h3>Other Games</h3>
+    <ul id="sidebar-list"></ul>
+  </aside>
 
   <!-- Footer -->
   <footer class="site-footer">
     <div class="footer-content">
-      <p>© 2026 Zovi Games. All rights reserved.</p>
-      <p>
-        Contact:
-        <a href="mailto:thearam@protonmail.com">thearam@protonmail.com</a>
-      </p>
+      &copy; <span id="current-year">2026</span> Zovi Games. All rights reserved.
+      <a href="mailto:contact@zovigames.com">Contact</a>
     </div>
   </footer>
-
-  <script src="assets/script.js"></script>
 </body>
 </html>
