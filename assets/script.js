@@ -23,3 +23,23 @@ fetch("games.json")
     });
   })
   .catch(err => console.error("Failed to load games:", err));
+
+// ===== Search Function =====
+const searchInput = document.getElementById("search-input");
+
+searchInput.addEventListener("input", () => {
+  const query = searchInput.value.toLowerCase();
+
+  const hotGames = document.getElementById("hot-games").children;
+  const allGames = document.getElementById("all-games").children;
+
+  function filterGames(games) {
+    Array.from(games).forEach(card => {
+      const name = card.querySelector("span").textContent.toLowerCase();
+      card.style.display = name.includes(query) ? "" : "none";
+    });
+  }
+
+  filterGames(hotGames);
+  filterGames(allGames);
+});
