@@ -19,26 +19,26 @@
   </div>
 
   <script>
-    const games = [
-      { name: "Geometry Dash", file: "geometry-dash", thumb: "geometry-dash-thumb.png" },
-      { name: "Slope", file: "slope", thumb: "slope-thumb.png" },
-      // add more here
-    ];
-
-    // Load current game from URL
     const params = new URLSearchParams(window.location.search);
     const currentGame = params.get("game") || "geometry-dash";
+
+    // Load game iframe
     document.getElementById("game-frame").src = `games/${currentGame}.html`;
 
     // Populate sidebar
-    const sidebar = document.getElementById("sidebar-list");
-    games.forEach(game => {
-      if (game.file !== currentGame) { // hide current game
-        const li = document.createElement("li");
-        li.innerHTML = `<a href="game.html?game=${game.file}">${game.name}</a>`;
-        sidebar.appendChild(li);
-      }
-    });
+    fetch("games.json")
+      .then(res => res.json())
+      .then(games => {
+        const sidebar = document.getElementById("sidebar-list");
+        games.forEach(game => {
+          if (game.file !== currentGame) {
+            const li = document.createElement("li");
+            li.innerHTML = `<a href="game.html?game=${game.file}">${game.name}</a>`;
+            sidebar.appendChild(li);
+          }
+        });
+      })
+      .catch(err => console.error("Failed to load games.json:", err));
   </script>
 </body>
 </html>
