@@ -1,4 +1,4 @@
-/* Reset */
+/* ===== Reset ===== */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -11,7 +11,7 @@ body {
   color: #fff;
 }
 
-/* Top navigation bar with logo */
+/* ===== Top Navigation Bar ===== */
 .top-nav {
   width: 100%;
   padding: 10px 20px;
@@ -31,7 +31,7 @@ body {
 }
 
 .top-nav .logo {
-  height: 50px; /* logo size */
+  height: 50px;
   object-fit: contain;
   cursor: pointer;
   transition: 0.2s;
@@ -41,52 +41,106 @@ body {
   transform: scale(1.05);
 }
 
-/* Homepage grid */
+/* ===== Ad Banners ===== */
+.ad-banner {
+  width: 100%;
+  text-align: center;
+  margin: 10px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.ad-banner ins.adsbygoogle {
+  display: inline-block !important;
+  max-width: 728px;
+  width: 100%;
+  height: auto !important;
+}
+
+/* ===== Homepage Sections ===== */
+.section-title {
+  font-size: 1.8rem;
+  color: #4cafeb;
+  margin: 20px 0 10px 20px;
+  text-shadow: 0 0 8px #4cafeb;
+}
+
+.game-section {
+  padding-bottom: 30px;
+}
+
+/* Grid for game cards */
 .game-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 20px;
-  padding: 20px;
+  padding: 0 20px;
   justify-items: center;
 }
 
+/* ===== Game Cards ===== */
 .game-card {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  background: #1e1e1e;
+  background: linear-gradient(135deg, #1e1e1e, #272727);
   border-radius: 12px;
   overflow: hidden;
   text-decoration: none;
   color: #fff;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: transform 0.3s, box-shadow 0.3s, filter 0.3s;
   box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.5s forwards;
 }
 
+.game-card.hot {
+  border: 2px solid #ff3d3d;
+  box-shadow: 0 0 12px #ff3d3d;
+}
+
+/* Card hover effects */
 .game-card:hover {
-  transform: translateY(-5px) scale(1.05);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+  transform: scale(1.05) translateY(-3px);
+  filter: drop-shadow(0 0 12px #4cafeb);
 }
 
+.game-card.hot:hover {
+  filter: drop-shadow(0 0 15px #ff3d3d);
+  transform: scale(1.07) translateY(-5px);
+}
+
+/* Card images */
 .game-card img {
   width: 100%;
   max-width: 150px;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 1/1;
   object-fit: cover;
   border-radius: 12px;
+  transition: transform 0.3s, filter 0.3s;
 }
 
 .game-card span {
   padding: 10px 0;
   font-weight: bold;
   font-size: 1rem;
+  color: #fff;
 }
 
-/* Game page layout */
+/* Fade-in animation */
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Game Page Layout ===== */
 .game-page {
   display: flex;
-  height: calc(100vh - 70px); /* subtract header height */
+  height: calc(100vh - 70px);
   background: #121212;
 }
 
@@ -103,13 +157,13 @@ iframe {
   border: none;
 }
 
-/* Game controls panel below iframe */
+/* Game controls panel */
 .game-controls {
   margin-top: 10px;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  gap: 8px; /* space between buttons */
+  gap: 8px;
 }
 
 .game-controls button {
@@ -128,7 +182,7 @@ iframe {
   transform: scale(1.05);
 }
 
-/* Sidebar styling */
+/* ===== Sidebar ===== */
 .sidebar {
   flex: 1;
   background: #1e1e1e;
@@ -151,12 +205,11 @@ iframe {
   margin-bottom: 8px;
 }
 
-/* Sidebar icons & text */
 .sidebar ul li a {
   display: flex;
   align-items: center;
-  gap: 8px;           /* gap between icon + text */
-  padding: 4px 6px;   /* padding */
+  gap: 8px;
+  padding: 4px 6px;
   border-radius: 6px;
   transition: 0.2s;
   color: #fff;
@@ -164,7 +217,7 @@ iframe {
 }
 
 .sidebar ul li a img {
-  width: 30px;       /* smaller icon */
+  width: 30px;
   height: 30px;
   border-radius: 6px;
   object-fit: cover;
@@ -172,7 +225,7 @@ iframe {
 
 .sidebar ul li a span {
   flex: 1;
-  font-size: 0.9rem; /* slightly smaller text */
+  font-size: 0.9rem;
 }
 
 .sidebar ul li a:hover {
@@ -181,7 +234,13 @@ iframe {
   transform: scale(1.05);
 }
 
-/* Responsive for mobile */
+/* Sidebar ad */
+.sidebar-ad {
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* ===== Responsive ===== */
 @media (max-width: 800px) {
   .game-page {
     flex-direction: column;
