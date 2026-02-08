@@ -158,7 +158,9 @@ iframe {
 .game-controls {
   margin-top: 10px;
   display: flex;
-  justify-content: flex-end; /* button on the right */
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 8px; /* space between buttons */
 }
 
 .game-controls button {
@@ -175,5 +177,7 @@ iframe {
 .game-controls button:hover {
   background: #3b8edc;
   transform: scale(1.05);
+}
+
 }
 
