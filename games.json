@@ -1,6 +1,6 @@
 [
-  { "name": "Geometry Dash", "file": "geometry-dash", "thumb": "geometry-dash-thumb.png" },
-  { "name": "Slope", "file": "slope", "thumb": "slope-thumb.png" },
-  { "name": "Space Waves", "file": "space-waves", "thumb": "space-waves-thumb.png" },
-  { "name": "Five Nights At Freddy's", "file": "fnaf1", "thumb": "fnaf1-thumb.png" }
+  { "name": "Geometry Dash", "file": "geometry-dash", "thumb": "geometry-dash-thumb.png", "hot": false, "new": true  },
+  { "name": "Slope", "file": "slope", "thumb": "slope-thumb.png", "hot": true, "new": false  },
+  { "name": "Space Waves", "file": "space-waves", "thumb": "space-waves-thumb.png", "hot": true, "new": false },
+  { "name": "Five Nights At Freddy's", "file": "fnaf1", "thumb": "fnaf1-thumb.png", "hot": false, "new": true }
 ]
