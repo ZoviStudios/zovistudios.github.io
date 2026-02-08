@@ -11,9 +11,13 @@
     <div class="game-container">
       <iframe id="game-frame" src="" allowfullscreen></iframe>
 
-      <!-- Control panel below iframe -->
+      <!-- Arcade control panel -->
       <div class="game-controls">
-        <button id="fullscreen-btn">Toggle Fullscreen</button>
+        <button id="fullscreen-btn">Fullscreen</button>
+        <button id="back-btn">Back to Homepage</button>
+        <!-- Optional volume/play buttons -->
+        <button id="play-btn">Play</button>
+        <button id="pause-btn">Pause</button>
       </div>
     </div>
 
@@ -53,13 +57,30 @@
         .catch(err => console.error("Failed to load games.json:", err));
 
       // Fullscreen toggle
-      const fullscreenBtn = document.getElementById("fullscreen-btn");
-      fullscreenBtn.addEventListener("click", () => {
+      document.getElementById("fullscreen-btn").addEventListener("click", () => {
         if (!document.fullscreenElement) {
           gameFrame.requestFullscreen().catch(err => console.error(err));
         } else {
           document.exitFullscreen();
         }
+      });
+
+      // Back to homepage
+      document.getElementById("back-btn").addEventListener("click", () => {
+        window.location.href = "index.html";
+      });
+
+      // Play / Pause buttons
+      // Works only if iframe content supports postMessage or simple HTML5 audio/video
+      const playBtn = document.getElementById("play-btn");
+      const pauseBtn = document.getElementById("pause-btn");
+
+      playBtn.addEventListener("click", () => {
+        gameFrame.contentWindow.postMessage({ action: "play" }, "*");
+      });
+
+      pauseBtn.addEventListener("click", () => {
+        gameFrame.contentWindow.postMessage({ action: "pause" }, "*");
       });
     })();
   </script>
