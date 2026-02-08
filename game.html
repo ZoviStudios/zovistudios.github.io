@@ -34,55 +34,75 @@
   </div>
 
   <script>
-    (function() {
-      const params = new URLSearchParams(window.location.search);
-      const currentGame = params.get("game") || "geometry-dash";
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const currentGame = params.get("game") || "geometry-dash";
 
-      // Load current game iframe
-      const gameFrame = document.getElementById("game-frame");
-      gameFrame.src = `games/${currentGame}.html`;
+  // Load current game iframe
+  const gameFrame = document.getElementById("game-frame");
+  gameFrame.src = `games/${currentGame}.html`;
 
-      // Populate sidebar with icons
-      fetch("games.json")
-        .then(res => res.json())
-        .then(games => {
-          const sidebar = document.getElementById("sidebar-list");
-          games.forEach(game => {
-            if (game.file !== currentGame) {
-              const li = document.createElement("li");
-              li.innerHTML = `
-                <a href="game.html?game=${game.file}">
-                  <img src="assets/${game.thumb}" alt="${game.name}">
-                  <span>${game.name}</span>
-                </a>
-              `;
-              sidebar.appendChild(li);
-            }
-          });
-        })
-        .catch(err => console.error("Failed to load games.json:", err));
-
-      // Fullscreen toggle
-      document.getElementById("fullscreen-btn").addEventListener("click", () => {
-        if (!document.fullscreenElement) {
-          gameFrame.requestFullscreen().catch(err => console.error(err));
-        } else {
-          document.exitFullscreen();
+  // Populate sidebar with icons
+  fetch("games.json")
+    .then(res => res.json())
+    .then(games => {
+      const sidebar = document.getElementById("sidebar-list");
+      games.forEach(game => {
+        if (game.file !== currentGame) {
+          const li = document.createElement("li");
+          li.innerHTML = `
+            <a href="game.html?game=${game.file}">
+              <img src="assets/${game.thumb}" alt="${game.name}">
+              <span>${game.name}</span>
+            </a>
+          `;
+          sidebar.appendChild(li);
         }
       });
+    })
+    .catch(err => console.error("Failed to load games.json:", err));
 
-      // Play / Pause buttons
-      const playBtn = document.getElementById("play-btn");
-      const pauseBtn = document.getElementById("pause-btn");
+  // Fullscreen with rewarded ad
+  const fullscreenBtn = document.getElementById("fullscreen-btn");
+  fullscreenBtn.addEventListener("click", () => {
+    // Create ad overlay
+    const adContainer = document.createElement("div");
+    adContainer.className = "rewarded-ad";
+    adContainer.innerHTML = `
+      <div class="ad-content">
+        <!-- Replace this with your real rewarded ad script -->
+        <span>Watch this ad to unlock fullscreen (5 seconds)</span>
+      </div>
+    `;
+    document.body.appendChild(adContainer);
 
-      playBtn.addEventListener("click", () => {
-        gameFrame.contentWindow.postMessage({ action: "play" }, "*");
-      });
+    // Simulate ad watch for 5 seconds
+    setTimeout(() => {
+      // Remove ad overlay
+      document.body.removeChild(adContainer);
 
-      pauseBtn.addEventListener("click", () => {
-        gameFrame.contentWindow.postMessage({ action: "pause" }, "*");
-      });
-    })();
-  </script>
+      // Allow fullscreen
+      if (!document.fullscreenElement) {
+        gameFrame.requestFullscreen().catch(err => console.error(err));
+      } else {
+        document.exitFullscreen();
+      }
+    }, 5000); // Change to your ad duration if needed
+  });
+
+  // Play / Pause buttons
+  const playBtn = document.getElementById("play-btn");
+  const pauseBtn = document.getElementById("pause-btn");
+
+  playBtn.addEventListener("click", () => {
+    gameFrame.contentWindow.postMessage({ action: "play" }, "*");
+  });
+
+  pauseBtn.addEventListener("click", () => {
+    gameFrame.contentWindow.postMessage({ action: "pause" }, "*");
+  });
+})();
+</script>
+
 </body>
 </html>
