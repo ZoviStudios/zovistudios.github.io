@@ -52,7 +52,7 @@ function getDominantColor(imgSrc, callback) {
     let r = 0, g = 0, b = 0, count = 0;
     for (let i = 0; i < data.length; i += 4) {
       const alpha = data[i+3];
-      if (alpha > 128) { // ignore transparent pixels
+      if (alpha > 128) {
         r += data[i];
         g += data[i+1];
         b += data[i+2];
@@ -64,7 +64,7 @@ function getDominantColor(imgSrc, callback) {
     b = Math.floor(b / count);
     callback(`rgb(${r},${g},${b})`);
   };
-  img.onerror = () => callback("#4cafeb"); // fallback color
+  img.onerror = () => callback("#4cafeb");
 }
 
 fetch("games.json")
@@ -72,6 +72,7 @@ fetch("games.json")
   .then(games => {
     const hotContainer = document.getElementById("hot-games");
     const allContainer = document.getElementById("all-games");
+    const sidebar = document.getElementById("sidebar-list");
 
     function createCard(game) {
       const card = document.createElement("a");
@@ -81,7 +82,6 @@ fetch("games.json")
         <img src="assets/${game.thumb}" alt="${game.name}">
         <span>${game.name}</span>
       `;
-      // Automatically get dominant color from thumbnail
       getDominantColor(`assets/${game.thumb}`, color => {
         card.style.boxShadow = `0 0 12px ${color}`;
         card.onmouseover = () => card.style.filter = `drop-shadow(0 0 15px ${color})`;
@@ -90,20 +90,33 @@ fetch("games.json")
       return card;
     }
 
+    function createSidebarIcon(game) {
+      const li = document.createElement("li");
+      li.innerHTML = `
+        <a href="game.html?game=${game.file}">
+          <img src="assets/${game.thumb}" alt="${game.name}">
+          <span>${game.name}</span>
+        </a>
+      `;
+      const img = li.querySelector("img");
+      getDominantColor(`assets/${game.thumb}`, color => {
+        img.style.boxShadow = `0 0 6px ${color}`;
+      });
+      return li;
+    }
+
     // HOT games - first 4
-    games.slice(0,4).forEach(game => {
-      const card = createCard(game);
-      hotContainer.appendChild(card);
-    });
+    games.slice(0,4).forEach(game => hotContainer.appendChild(createCard(game)));
 
     // ALL games
-    games.forEach(game => {
-      const card = createCard(game);
-      allContainer.appendChild(card);
-    });
+    games.forEach(game => allContainer.appendChild(createCard(game)));
+
+    // Sidebar icons
+    games.forEach(game => sidebar.appendChild(createSidebarIcon(game)));
   })
   .catch(err => console.error("Failed to load games.json:", err));
 </script>
+
 
 </body>
 </html>
