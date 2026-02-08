@@ -14,9 +14,9 @@
     </a>
   </header>
 
-  <!-- Top banner ad -->
+  <!-- Ad banner placeholder -->
   <div class="ad-banner">
-    <!-- Replace this with your AdSense code -->
+    <!-- Insert your AdSense code here -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3531802908860882"
      crossorigin="anonymous"></script>
   </div>
@@ -27,7 +27,7 @@
 
       <!-- Arcade control panel -->
       <div class="game-controls">
-        <button id="fullscreen-btn">Go Fullscreen (Watch Ad)</button>
+        <button id="fullscreen-btn">Fullscreen</button>
         <button id="play-btn">Play</button>
         <button id="pause-btn">Pause</button>
       </div>
@@ -36,13 +36,6 @@
     <div class="sidebar">
       <h3>Other Games</h3>
       <ul id="sidebar-list"></ul>
-
-      <!-- Sidebar ad -->
-      <div class="sidebar-ad">
-        <!-- Same AdSense code as top banner -->
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3531802908860882"
-     crossorigin="anonymous"></script>
-      </div>
     </div>
   </div>
 
@@ -75,30 +68,13 @@
         })
         .catch(err => console.error("Failed to load games.json:", err));
 
-      // Fullscreen with rewarded ad using same AdSense code
-      const fullscreenBtn = document.getElementById("fullscreen-btn");
-      fullscreenBtn.addEventListener("click", () => {
-        const adContainer = document.createElement("div");
-        adContainer.className = "rewarded-ad";
-        adContainer.innerHTML = `
-          <div class="ad-content">
-            <!-- Same AdSense code as top banner -->
-            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3531802908860882"
-     crossorigin="anonymous"></script>
-            <p>Wait a few seconds to unlock fullscreen</p>
-          </div>
-        `;
-        document.body.appendChild(adContainer);
-
-        // Wait 5 seconds (simulate rewarded ad)
-        setTimeout(() => {
-          document.body.removeChild(adContainer);
-          if (!document.fullscreenElement) {
-            gameFrame.requestFullscreen().catch(err => console.error(err));
-          } else {
-            document.exitFullscreen();
-          }
-        }, 5000);
+      // Fullscreen toggle
+      document.getElementById("fullscreen-btn").addEventListener("click", () => {
+        if (!document.fullscreenElement) {
+          gameFrame.requestFullscreen().catch(err => console.error(err));
+        } else {
+          document.exitFullscreen();
+        }
       });
 
       // Play / Pause buttons
