@@ -3,24 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zovi Arcade Game</title>
+  <title>Zovi Games</title>
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-  <div class="game-container">
-    <iframe id="game-frame" src="" frameborder="0" allowfullscreen></iframe>
-  </div>
+  <div class="game-page">
+    <div class="game-container">
+      <iframe id="game-frame" src="" allowfullscreen></iframe>
+    </div>
 
-  <div class="sidebar">
-    <h3>Other Games</h3>
-    <ul>
-      <li><a href="game.html?game=geometry-dash">Geometry Dash</a></li>
-      <li><a href="game.html?game=slope">Slope</a></li>
-      <!-- Add more games here -->
-    </ul>
+    <div class="sidebar">
+      <h3>Other Games</h3>
+      <ul>
+        <li><a href="game.html?game=geometry-dash">Geometry Dash</a></li>
+        <li><a href="game.html?game=slope">Slope</a></li>
+        <!-- Add more games here -->
+      </ul>
+    </div>
   </div>
 
   <script>
+    // Load the correct game from query parameter
     const params = new URLSearchParams(window.location.search);
     const game = params.get('game') || 'geometry-dash';
     document.getElementById('game-frame').src = `games/${game}.html`;
