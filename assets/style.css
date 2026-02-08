@@ -1,298 +1,195 @@
-/* ===== Reset ===== */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+/* ===== Color Theme ===== */
+:root {
+  --bg-main: #0b0f1a;
+  --bg-card: #12182a;
+  --accent-blue: #4cc9f0;
+  --accent-purple: #9d4edd;
+  --text-main: #e6e9ff;
+}
+
+/* ===== Page Layout Fix (footer at bottom) ===== */
+html, body {
+  height: 100%;
 }
 
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(270deg, #121212, #1a1a1a, #121212);
-  background-size: 600% 600%;
-  animation: gradientAnim 20s ease infinite;
-  color: #fff;
-}
-
-/* Gradient animation */
-@keyframes gradientAnim {
-  0% {background-position: 0% 50%;}
-  50% {background-position: 100% 50%;}
-  100% {background-position: 0% 50%;}
-}
-
-/* ===== Top Navigation Bar ===== */
-.top-nav {
-  width: 100%;
-  padding: 10px 20px;
-  background: #1e1e1e;
-  display: flex;
-  align-items: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-
-.top-nav .logo-link {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-}
-
-.top-nav .logo {
-  height: 50px;
-  object-fit: contain;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.top-nav .logo:hover {
-  transform: scale(1.05);
-}
-
-/* ===== Ad Banners ===== */
-.ad-banner {
-  width: 100%;
-  text-align: center;
-  margin: 10px 0;
-  display: flex;
-  justify-content: center;
-}
-
-.ad-banner ins.adsbygoogle {
-  display: inline-block !important;
-  max-width: 728px;
-  width: 100%;
-  height: auto !important;
-}
-
-/* ===== Homepage Sections ===== */
-.section-title {
-  font-size: 1.8rem;
-  color: #4cafeb;
-  margin: 15px 0 8px 15px;
-  text-shadow: 0 0 8px #4cafeb;
-}
-
-.game-section {
-  padding-bottom: 20px;
-}
-
-/* Grid for game cards */
-.game-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 6px; /* tighter spacing */
-  padding: 0 10px;
-  justify-items: center;
-}
-
-/* ===== Game Cards ===== */
-.game-card {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: radial-gradient(circle at top, #111633, #0b0f1a 60%);
+  color: var(--text-main);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  background: linear-gradient(135deg, #1e1e1e, #272727);
-  border-radius: 12px;
-  overflow: hidden;
-  text-decoration: none;
-  color: #fff;
-  transition: transform 0.3s, box-shadow 0.3s, filter 0.3s;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 0.5s forwards;
-}
-
-.game-card img {
-  width: 100%;
-  max-width: 150px;
-  aspect-ratio: 1/1;
-  object-fit: cover;
-  border-radius: 12px;
-  transition: transform 0.3s, filter 0.3s;
-}
-
-.game-card span {
-  padding: 10px 0;
-  font-weight: bold;
-  font-size: 1rem;
-  color: #fff;
-}
-
-/* Hover scaling & glow handled via JS dynamic color */
-.game-card:hover {
-  transform: scale(1.05) translateY(-3px);
-}
-
-.game-card.hot:hover {
-  transform: scale(1.07) translateY(-5px);
-}
-
-/* Fade-in animation */
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ===== Game Page Layout ===== */
-.game-page {
-  flex: 1;
-  display: flex;
-  height: calc(100vh - 70px);
-  background: #121212;
 }
 
 main {
   flex: 1;
 }
 
-.game-container {
-  flex: 3;
+/* ===== Top Navigation ===== */
+.top-nav {
+  background: #0f1426;
+  padding: 12px 20px;
+  border-bottom: 1px solid #1f2a44;
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 42px;
+}
+
+/* ===== Section Titles ===== */
+.section-title {
+  margin: 25px 20px 10px;
+  font-size: 1.6rem;
+  color: white;
+  text-shadow:
+    0 0 8px var(--accent-blue),
+    0 0 18px var(--accent-purple);
+}
+
+/* ===== Game Lists (home) ===== */
+.game-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 14px;
+  padding: 0 20px 20px;
+}
+
+/* ===== Game Card ===== */
+.game-card {
+  background: var(--bg-card);
+  border-radius: 14px;
+  text-decoration: none;
+  color: white;
+  overflow: hidden;
+  transition: 0.25s ease;
+  border: 1px solid #1d2540;
+  display: flex;
+  flex-direction: column;
+}
+
+.game-card img {
+  width: 100%;
+  height: 110px;
+  object-fit: cover;
+}
+
+.game-card span {
+  padding: 10px;
+  font-size: 0.95rem;
+}
+
+.game-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow:
+    0 0 20px var(--accent-blue),
+    0 0 40px var(--accent-purple);
+}
+
+/* ===== Game Page Layout ===== */
+.game-page {
+  display: flex;
+  gap: 20px;
   padding: 20px;
 }
 
-iframe {
-  width: 100%;
-  height: 100%;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-  border: none;
+/* ===== Game Container ===== */
+.game-container {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Game controls panel */
+#game-frame {
+  width: 100%;
+  height: 70vh;
+  border: none;
+  border-radius: 14px;
+  background: black;
+}
+
+/* ===== Fullscreen Controls ===== */
 .game-controls {
   margin-top: 10px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  gap: 8px;
+  text-align: center;
 }
 
-.game-controls button {
-  padding: 6px 12px;
-  background: #4cafeb;
+#fullscreen-btn {
+  padding: 10px 20px;
   border: none;
-  border-radius: 6px;
-  color: #121212;
+  border-radius: 10px;
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+  color: white;
   font-weight: bold;
   cursor: pointer;
-  transition: 0.2s;
-}
-
-.game-controls button:hover {
-  background: #3b8edc;
-  transform: scale(1.05);
 }
 
 /* ===== Sidebar ===== */
 .sidebar {
   flex: 1;
-  background: #1e1e1e;
-  padding: 15px;
-  overflow-y: auto;
-  border-left: 1px solid #333;
+  background: #0f1426;
+  border-radius: 14px;
+  padding: 12px;
+  border: 1px solid #1f2a44;
+  height: fit-content;
 }
 
 .sidebar h3 {
-  margin-bottom: 10px;
-  color: #4cafeb;
-  font-size: 1.2rem;
+  margin-top: 0;
+  text-align: center;
 }
 
 .sidebar ul {
   list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.sidebar ul li {
-  margin-bottom: 4px; /* tighter spacing */
+.sidebar li {
+  margin-bottom: 10px;
 }
 
-.sidebar ul li a {
+.sidebar a {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 4px 6px;
-  border-radius: 6px;
-  transition: 0.2s;
-  color: #fff;
   text-decoration: none;
+  color: white;
+  background: var(--bg-card);
+  padding: 6px;
+  border-radius: 8px;
+  transition: 0.2s;
 }
 
-.sidebar ul li a img {
-  width: 30px;
-  height: 30px;
-  border-radius: 6px;
+.sidebar a:hover {
+  box-shadow: 0 0 10px var(--accent-purple);
+}
+
+.sidebar img {
+  width: 40px;
+  height: 40px;
   object-fit: cover;
-  transition: transform 0.2s, box-shadow 0.2s;
+  border-radius: 6px;
 }
 
-.sidebar ul li a span {
-  flex: 1;
-  font-size: 0.9rem;
-}
-
-.sidebar ul li a:hover {
-  transform: scale(1.05);
-}
-
-/* Sidebar ad */
-.sidebar-ad {
-  margin-top: 20px;
+/* ===== Ad Banner ===== */
+.ad-banner {
+  margin: 20px;
   text-align: center;
-}
-
-/* ===== Responsive ===== */
-@media (max-width: 800px) {
-  .game-page {
-    flex-direction: column;
-    height: auto;
-  }
-  .sidebar {
-    width: 100%;
-    height: auto;
-    border-left: none;
-    border-top: 1px solid #333;
-  }
-}
-/* ===== Pulsing glow for section titles ===== */
-.section-title {
-  position: relative;
-  animation: titlePulse 3s ease-in-out infinite;
-}
-
-@keyframes titlePulse {
-  0% {
-    text-shadow: 0 0 6px #4cafeb, 0 0 12px #4cafeb;
-  }
-  50% {
-    text-shadow: 0 0 12px #4cafeb, 0 0 24px #4cafeb;
-  }
-  100% {
-    text-shadow: 0 0 6px #4cafeb, 0 0 12px #4cafeb;
-  }
 }
 
 /* ===== Footer ===== */
 .site-footer {
-  margin-top: 40px;
-  padding: 20px 10px;
-  background: #0e0e0e;
-  border-top: 1px solid #222;
+  margin-top: auto;
+  padding: 25px 10px;
+  background: #0f1426;
+  border-top: 1px solid #1f2a44;
   text-align: center;
-  font-size: 0.9rem;
-  color: #aaa;
+  color: #9aa4ff;
 }
 
-.site-footer a {
-  color: #4cafeb;
+.footer-content a {
+  color: var(--accent-blue);
   text-decoration: none;
-  font-weight: bold;
-}
-
-.site-footer a:hover {
-  text-shadow: 0 0 6px #4cafeb;
 }
