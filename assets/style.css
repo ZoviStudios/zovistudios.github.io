@@ -25,18 +25,20 @@ main {
   flex: 1;
 }
 
-/* ===== Top Navigation ===== */
+/* ===== Top Navigation Bigger & Wider ===== */
 .top-nav {
   background: #0f1426;
   padding: 20px 30px;
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 30px; /* more space between logo and search */
   border-bottom: 2px solid #1f2a44;
 }
 
+/* Make logo bigger and wider (keep proportions) */
 .logo {
-  height: 70px;
+  height: 90px;          /* taller */
+  width: auto;           /* maintain proportions */
   cursor: pointer;
   transition: transform 0.2s;
 }
@@ -45,9 +47,10 @@ main {
   transform: scale(1.05);
 }
 
-/* Search bar next to logo */
+/* Search bar slightly to the right and shorter */
 .search-bar {
-  flex: 1;
+  flex: 0 0 300px;       /* fixed width instead of flexing fully */
+  margin-left: 20px;     /* pushes it a little to the right */
   padding: 10px 15px;
   border-radius: 12px;
   border: 1px solid #1d2540;
