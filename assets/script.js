@@ -42,4 +42,11 @@ searchInput.addEventListener("input", () => {
 
   filterGames(hotGames);
   filterGames(allGames);
+
+  if (searchInput.value.trim() !== "") {
+    searchInput.classList.add("glow");
+  } else {
+    searchInput.classList.remove("glow");
+  }
 });
+
