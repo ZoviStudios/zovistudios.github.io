@@ -7,7 +7,7 @@
   --text-main: #e6e9ff;
 }
 
-/* ===== Page Layout Fix (footer at bottom) ===== */
+/* ===== Page Layout ===== */
 html, body {
   height: 100%;
 }
@@ -28,7 +28,7 @@ main {
 /* ===== Top Navigation ===== */
 .top-nav {
   background: #0f1426;
-  height: 100px;           /* height of the navigation panel */
+  height: 100px;
   padding: 0 30px;
   display: flex;
   align-items: center;
@@ -36,10 +36,9 @@ main {
   border-bottom: 2px solid #1f2a44;
 }
 
-/* Logo back to normal size */
 .logo {
-  height: 70px;            /* original size */
-  width: auto;             /* maintain proportions */
+  height: 70px;
+  width: auto;
   cursor: pointer;
   transition: transform 0.2s;
 }
@@ -48,10 +47,9 @@ main {
   transform: scale(1.05);
 }
 
-/* Search bar next to logo */
 .search-bar {
-  flex: 0 0 250px;        /* fixed width */
-  margin-left: 0;         /* directly next to logo */
+  flex: 0 0 250px;
+  margin-left: 0;
   padding: 10px 15px;
   border-radius: 12px;
   border: 1px solid #1d2540;
@@ -62,16 +60,48 @@ main {
   box-shadow: 0 0 4px #000;
 }
 
-/* Glow effect when typing */
+.search-bar::placeholder {
+  color: #8888ff;
+}
+
 .search-bar.glow {
   box-shadow:
     0 0 8px var(--accent-blue),
     0 0 16px var(--accent-purple);
 }
 
+/* ===== Hero Logo ===== */
+.hero-logo-container {
+  text-align: center;
+  margin: 30px 0 20px;
+}
 
-.search-bar::placeholder {
-  color: #8888ff;
+.hero-logo {
+  height: 120px;
+  width: auto;
+  animation: glow-pulse 2s infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 10px #4cc9f0)
+            drop-shadow(0 0 20px #9d4edd);
+  }
+  50% {
+    filter: drop-shadow(0 0 15px #4cc9f0)
+            drop-shadow(0 0 30px #9d4edd);
+  }
+}
+
+/* ===== Tagline ===== */
+.site-tagline {
+  text-align: center;
+  color: var(--accent-blue);
+  text-shadow:
+    0 0 8px var(--accent-blue),
+    0 0 16px var(--accent-purple);
+  margin: 10px 0 30px;
+  font-size: 1.5rem;
 }
 
 /* ===== Section Titles ===== */
@@ -84,15 +114,18 @@ main {
     0 0 18px var(--accent-purple);
 }
 
-/* ===== Game Lists (home) ===== */
+/* ===== Game Lists ===== */
 .game-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
   gap: 14px;
-  padding: 0 20px 20px;
+  padding: 10px 20px 20px;
+  border: 2px solid transparent;
+  border-image: linear-gradient(45deg, var(--accent-blue), var(--accent-purple)) 1;
+  border-radius: 12px;
 }
 
-/* ===== Game Card ===== */
+/* ===== Game Cards ===== */
 .game-card {
   background: var(--bg-card);
   border-radius: 14px;
@@ -121,44 +154,6 @@ main {
   box-shadow:
     0 0 20px var(--accent-blue),
     0 0 40px var(--accent-purple);
-}
-
-/* ===== Game Page Layout ===== */
-.game-page {
-  display: flex;
-  gap: 20px;
-  padding: 20px;
-}
-
-/* ===== Game Container ===== */
-.game-container {
-  flex: 3;
-  display: flex;
-  flex-direction: column;
-}
-
-#game-frame {
-  width: 100%;
-  height: 70vh;
-  border: none;
-  border-radius: 14px;
-  background: black;
-}
-
-/* ===== Fullscreen Controls ===== */
-.game-controls {
-  margin-top: 10px;
-  text-align: center;
-}
-
-#fullscreen-btn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 10px;
-  background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
 }
 
 /* ===== Sidebar ===== */
@@ -209,6 +204,42 @@ main {
   border-radius: 6px;
 }
 
+/* ===== Game Page ===== */
+.game-page {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+.game-container {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+}
+
+#game-frame {
+  width: 100%;
+  height: 70vh;
+  border: none;
+  border-radius: 14px;
+  background: black;
+}
+
+.game-controls {
+  margin-top: 10px;
+  text-align: center;
+}
+
+#fullscreen-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
 /* ===== Ad Banner ===== */
 .ad-banner {
   margin: 20px;
@@ -233,19 +264,19 @@ main {
 /* ===== Responsive Navigation ===== */
 @media (max-width: 900px) {
   .top-nav {
-    flex-wrap: wrap;          /* wrap logo and search if too narrow */
-    height: auto;             /* allow nav to grow if wrapped */
+    flex-wrap: wrap;
+    height: auto;
     padding: 15px 20px;
     gap: 15px;
   }
 
   .logo {
-    max-height: 70px;         /* scale down on smaller screens */
+    max-height: 70px;
     width: auto;
   }
 
   .search-bar {
-    flex: 1 1 auto;           /* let search expand to fill available space */
+    flex: 1 1 auto;
     max-width: 300px;
     margin-left: 0;
   }
@@ -253,11 +284,10 @@ main {
 
 @media (max-width: 500px) {
   .top-nav {
-    justify-content: center;   /* center everything on very small screens */
+    justify-content: center;
   }
 
   .search-bar {
-    max-width: 100%;           /* take full width under logo */
+    max-width: 100%;
   }
 }
-
