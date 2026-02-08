@@ -25,6 +25,48 @@ header h1 {
   color: #4cafeb;
 }
 
+/* Homepage grid */
+.game-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  justify-items: center;
+}
+
+.game-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: #1e1e1e;
+  border-radius: 12px;
+  overflow: hidden;
+  text-decoration: none;
+  color: #fff;
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+.game-card:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+}
+
+.game-card img {
+  width: 100%;
+  max-width: 150px;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.game-card span {
+  padding: 10px 0;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
 /* Game page layout */
 .game-page {
   display: flex;
@@ -60,35 +102,36 @@ iframe {
   font-size: 1.2rem;
 }
 
-/* Sidebar list with icons */
 .sidebar ul {
   list-style: none;
 }
 
 .sidebar ul li {
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
+/* Updated sidebar icons & text */
 .sidebar ul li a {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 6px 8px;
-  border-radius: 8px;
+  gap: 8px;           /* smaller gap between icon + text */
+  padding: 4px 6px;   /* tighter padding */
+  border-radius: 6px;
   transition: 0.2s;
   color: #fff;
   text-decoration: none;
 }
 
 .sidebar ul li a img {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
+  width: 30px;       /* smaller icon */
+  height: 30px;
+  border-radius: 6px;
   object-fit: cover;
 }
 
 .sidebar ul li a span {
   flex: 1;
+  font-size: 0.9rem; /* slightly smaller font */
 }
 
 .sidebar ul li a:hover {
