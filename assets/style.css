@@ -253,3 +253,21 @@ iframe {
     border-top: 1px solid #333;
   }
 }
+/* ===== Pulsing glow for section titles ===== */
+.section-title {
+  position: relative;
+  animation: titlePulse 3s ease-in-out infinite;
+}
+
+@keyframes titlePulse {
+  0% {
+    text-shadow: 0 0 6px #4cafeb, 0 0 12px #4cafeb;
+  }
+  50% {
+    text-shadow: 0 0 12px #4cafeb, 0 0 24px #4cafeb;
+  }
+  100% {
+    text-shadow: 0 0 6px #4cafeb, 0 0 12px #4cafeb;
+  }
+}
+
