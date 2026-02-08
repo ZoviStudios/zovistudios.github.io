@@ -6,22 +6,24 @@
 <title>Zovi Arcade</title>
 <style>
     body {
+        margin: 0;
         font-family: 'Poppins', sans-serif;
         background: linear-gradient(135deg, #1b1b2f, #0f0f1e);
         color: #fff;
-        margin: 0;
         padding: 20px;
     }
+
     header {
         text-align: center;
         margin-bottom: 40px;
     }
+
     header h1 {
         font-size: 3rem;
         color: #00f6ff;
         text-shadow: 0 0 15px #00f6ff;
     }
-    header p { color: #aaa; }
+    header p { color: #aaa; margin-top: 10px; }
 
     .game-grid {
         display: grid;
@@ -30,6 +32,7 @@
         max-width: 1200px;
         margin: 0 auto;
     }
+
     .game-card {
         background: #11111f;
         border-radius: 12px;
@@ -47,35 +50,37 @@
 </style>
 </head>
 <body>
+
 <header>
     <h1>Zovi Arcade</h1>
-    <p>Click a game to focus and play it</p>
+    <p>Click a game to play it in focus</p>
 </header>
 
 <div class="game-grid">
-    <div class="game-card" onclick="openGame('https://ozgames.io/geometry-dash.embed')">
-        <h3>Geometry Dash Lite</h3>
-        <img src="https://ozgames.io/geometry-dash-thumb.png" alt="Geometry Dash">
+    <div class="game-card" onclick="openGame('games/geometry-dash.html')">
+        <h3>Geometry Dash</h3>
+        <img src="assets/images/geometry-dash-thumb.png" alt="Geometry Dash">
     </div>
-    <div class="game-card" onclick="openGame('https://ozgames.io/slope.embed')">
+    <div class="game-card" onclick="openGame('games/slope.html')">
         <h3>Slope</h3>
-        <img src="https://ozgames.io/slope-thumb.png" alt="Slope">
+        <img src="assets/images/slope-thumb.png" alt="Slope">
     </div>
-    <div class="game-card" onclick="openGame('https://ozgames.io/krunker.embed')">
+    <div class="game-card" onclick="openGame('games/krunker.html')">
         <h3>Krunker</h3>
-        <img src="https://ozgames.io/krunker-thumb.png" alt="Krunker">
+        <img src="assets/images/krunker-thumb.png" alt="Krunker">
     </div>
-    <div class="game-card" onclick="openGame('https://ozgames.io/subway-surfers.embed')">
+    <div class="game-card" onclick="openGame('games/subway-surfers.html')">
         <h3>Subway Surfers</h3>
-        <img src="https://ozgames.io/subway-surfers-thumb.png" alt="Subway Surfers">
+        <img src="assets/images/subway-surfers-thumb.png" alt="Subway Surfers">
     </div>
 </div>
 
 <script>
-function openGame(url) {
-    // Open game page with embed URL passed as query
-    window.location.href = `game.html?game=${encodeURIComponent(url)}`;
+function openGame(file) {
+    // Redirect to game.html with query parameter
+    window.location.href = `game.html?game=${encodeURIComponent(file)}`;
 }
 </script>
+
 </body>
 </html>
