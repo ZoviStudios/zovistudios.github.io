@@ -1,4 +1,5 @@
 [
   { "name": "Geometry Dash", "file": "geometry-dash", "thumb": "geometry-dash-thumb.png" },
   { "name": "Slope", "file": "slope", "thumb": "slope-thumb.png" }
+  { "name": "Space Waves", "file": "space-waves", "thumb": "space-waves-thumb.png" }
 ]
