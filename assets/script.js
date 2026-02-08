@@ -1,116 +1,63 @@
-// ===== Load games from games.json =====
-fetch("games.json")
-  .then(res => res.json())
-  .then(games => {
-    const hotContainer = document.getElementById("hot-games");
-    const allContainer = document.getElementById("all-games");
-    const sidebar = document.getElementById("sidebar-list");
+// ===== Global helpers =====
+function createGameCard(game) {
+  const card = document.createElement("a");
+  card.className = "game-card";
+  card.href = `game.html?game=${game.file}`;
 
-    games.forEach(game => {
-      // Create main game card
-      const card = document.createElement("a");
-      card.href = `game.html?game=${game.file}`;
-      card.className = "game-card";
-      card.innerHTML = `
-        <img src="assets/${game.thumb}" alt="${game.name}">
-        <span>${game.name}</span>
-      `;
+  card.innerHTML = `
+    <img src="${game.thumbnail}" alt="${game.name}">
+    <span>${game.name}</span>
+  `;
 
-      // Add to ALL games
-      allContainer.appendChild(card);
+  // NEW badge
+  if (game.new) {
+    const badge = document.createElement("div");
+    badge.className = "new-badge";
+    badge.textContent = "NEW";
+    card.appendChild(badge);
+  }
 
-      // Add to HOT games if marked hot
-      if (game.hot) {
-        hotContainer.appendChild(card.cloneNode(true));
-      }
+  // Favorite star
+  const star = document.createElement("div");
+  star.className = "fav-star";
+  star.textContent = "⭐";
+  star.onclick = (e) => {
+    e.preventDefault();
+    toggleFavorite(game);
+  };
+  card.appendChild(star);
 
-      // Sidebar game list (exclude current game if on game.html)
-      if (sidebar) {
-        const urlParams = new URLSearchParams(window.location.search);
-        const currentGame = urlParams.get("game");
-        if (game.file !== currentGame) {
-          const li = document.createElement("li");
-          li.innerHTML = `
-            <a href="game.html?game=${game.file}">
-              <img src="assets/${game.thumb}" alt="${game.name}">
-              <span>${game.name}</span>
-            </a>
-          `;
-          sidebar.appendChild(li);
-        }
-      }
-
-      const star = document.createElement("div");
-      star.innerHTML = "⭐";
-      star.className = "fav-star";
-      star.onclick = (e) => {
-        e.stopPropagation();
-        toggleFavorite(game);
-      };
-      card.appendChild(star);
-
-      
-    });
-  })
-  .catch(err => console.error("Failed to load games:", err));
-
-
-// ===== Fullscreen Button =====
-const fullscreenBtn = document.getElementById("fullscreen-btn");
-const gameFrame = document.getElementById("game-frame");
-
-if (fullscreenBtn && gameFrame) {
-  fullscreenBtn.addEventListener("click", () => {
-    if (gameFrame.requestFullscreen) {
-      gameFrame.requestFullscreen();
-    }
-  });
+  return card;
 }
 
+// ===== Favorites =====
+function toggleFavorite(game) {
+  let favs = JSON.parse(localStorage.getItem("favorites")) || [];
 
-// ===== Search Function =====
-const searchInput = document.getElementById("search-input");
+  if (favs.find(g => g.file === game.file)) {
+    favs = favs.filter(g => g.file !== game.file);
+  } else {
+    favs.push(game);
+  }
 
-if (searchInput) {
-  searchInput.addEventListener("input", () => {
-    const query = searchInput.value.toLowerCase();
-
-    const hotGames = document.getElementById("hot-games").children;
-    const allGames = document.getElementById("all-games").children;
-
-    function filterGames(games) {
-      Array.from(games).forEach(card => {
-        const name = card.querySelector("span").textContent.toLowerCase();
-        card.style.display = name.includes(query) ? "" : "none";
-      });
-    }
-
-    filterGames(hotGames);
-    filterGames(allGames);
-
-    // Add glow effect to search bar when typing
-    if (searchInput.value.trim() !== "") {
-      searchInput.classList.add("glow");
-    } else {
-      searchInput.classList.remove("glow");
-    }
-  });
+  localStorage.setItem("favorites", JSON.stringify(favs));
+  loadFavorites();
 }
 
+function loadFavorites() {
+  const container = document.getElementById("favorite-games");
+  if (!container) return;
 
-// ===== Game Page Load (for game.html) =====
-const urlParams = new URLSearchParams(window.location.search);
-const currentGame = urlParams.get("game");
-
-if (currentGame && gameFrame) {
-  gameFrame.src = `games/${currentGame}.html`;
+  container.innerHTML = "";
+  const favs = JSON.parse(localStorage.getItem("favorites")) || [];
+  favs.forEach(game => container.appendChild(createGameCard(game)));
 }
 
 // ===== Recently Played =====
 function addRecentlyPlayed(game) {
   let recent = JSON.parse(localStorage.getItem("recentGames")) || [];
 
-  recent = recent.filter(g => g.name !== game.name);
+  recent = recent.filter(g => g.file !== game.file);
   recent.unshift(game);
   recent = recent.slice(0, 6);
 
@@ -121,30 +68,112 @@ function loadRecentlyPlayed() {
   const container = document.getElementById("recent-games");
   if (!container) return;
 
+  container.innerHTML = "";
   const recent = JSON.parse(localStorage.getItem("recentGames")) || [];
-  recent.forEach(game => {
-    const card = createGameCard(game);
-    container.appendChild(card);
+  recent.forEach(game => container.appendChild(createGameCard(game)));
+}
+
+// ===== Load games.json =====
+let games = [];
+
+fetch('games.json')
+  .then(res => res.json())
+  .then(data => {
+    games = data;
+
+    // Game counter
+    const counter = document.getElementById("game-count");
+    if (counter) counter.textContent = games.length;
+
+    // HOT & ALL games (index.html)
+    const hotContainer = document.getElementById("hot-games");
+    const allContainer = document.getElementById("all-games");
+
+    if (hotContainer) {
+      games.filter(g => g.hot).forEach(game => {
+        hotContainer.appendChild(createGameCard(game));
+      });
+    }
+
+    if (allContainer) {
+      games.forEach(game => {
+        allContainer.appendChild(createGameCard(game));
+      });
+    }
+
+    loadFavorites();
+    loadRecentlyPlayed();
+    setupSearch();
+    setupRandomButton();
+    loadSidebar();
+    loadGamePage();
+  });
+
+// ===== Search =====
+function setupSearch() {
+  const input = document.getElementById("search-input");
+  if (!input) return;
+
+  input.addEventListener("input", () => {
+    const query = input.value.toLowerCase();
+    const cards = document.querySelectorAll(".game-card");
+
+    cards.forEach(card => {
+      const name = card.innerText.toLowerCase();
+      card.style.display = name.includes(query) ? "flex" : "none";
+    });
+
+    input.classList.add("glow");
   });
 }
 
-function toggleFavorite(game) {
-  let favs = JSON.parse(localStorage.getItem("favorites")) || [];
-  if (favs.find(g => g.name === game.name)) {
-    favs = favs.filter(g => g.name !== game.name);
-  } else {
-    favs.push(game);
-  }
-  localStorage.setItem("favorites", JSON.stringify(favs));
+// ===== Random Game =====
+function setupRandomButton() {
+  const btn = document.getElementById("random-btn");
+  if (!btn) return;
+
+  btn.onclick = () => {
+    const random = games[Math.floor(Math.random() * games.length)];
+    window.location.href = `game.html?game=${random.file}`;
+  };
 }
 
-function loadFavorites() {
-  const container = document.getElementById("favorite-games");
-  if (!container) return;
+// ===== Sidebar for game.html =====
+function loadSidebar() {
+  const list = document.getElementById("sidebar-list");
+  if (!list) return;
 
-  const favs = JSON.parse(localStorage.getItem("favorites")) || [];
-  favs.forEach(game => {
-    const card = createGameCard(game);
-    container.appendChild(card);
+  games.slice(0, 8).forEach(game => {
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <a href="game.html?game=${game.file}">
+        <img src="${game.thumbnail}">
+        ${game.name}
+      </a>
+    `;
+    list.appendChild(li);
   });
+}
+
+// ===== Game Page Loader =====
+function loadGamePage() {
+  const frame = document.getElementById("game-frame");
+  if (!frame) return;
+
+  const params = new URLSearchParams(window.location.search);
+  const gameFile = params.get("game");
+
+  const gameData = games.find(g => g.file === gameFile);
+  if (!gameData) return;
+
+  frame.src = gameData.path;
+
+  // Add to recently played
+  addRecentlyPlayed(gameData);
+}
+
+// ===== Auto year update =====
+const yearSpan = document.getElementById("current-year");
+if (yearSpan) {
+  yearSpan.textContent = new Date().getFullYear();
 }
