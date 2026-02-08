@@ -2,104 +2,88 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zovi Arcade Game</title>
+  <title>Play Game - Zovi Games</title>
   <link rel="stylesheet" href="assets/style.css">
 </head>
+
 <body>
-  <!-- Top navigation bar with logo -->
-  <header class="top-nav">
+
+  <!-- Top Navigation -->
+  <div class="top-nav">
     <a href="index.html" class="logo-link">
-      <img src="assets/Zovi_Games_logo.png" alt="Zovi Games Logo" class="logo">
+      <img src="assets/logo.png" class="logo">
     </a>
-  </header>
-
-  <!-- Ad banner placeholder -->
-  <div class="ad-banner">
-    <!-- Insert your AdSense code here -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3531802908860882"
-     crossorigin="anonymous"></script>
   </div>
 
-  <div class="game-page">
-    <div class="game-container">
-      <iframe id="game-frame" src="" allowfullscreen></iframe>
+  <main>
 
-      <!-- Arcade control panel -->
-      <div class="game-controls">
-        <button id="fullscreen-btn">Fullscreen</button>
-        <button id="play-btn">Play</button>
-        <button id="pause-btn">Pause</button>
+    <div class="game-page">
+
+      <!-- Left: Game -->
+      <div class="game-container">
+        <iframe id="game-frame"></iframe>
+
+        <div class="game-controls">
+          <button id="fullscreen-btn">Fullscreen</button>
+        </div>
       </div>
+
+      <!-- Right: Sidebar -->
+      <div class="sidebar">
+        <h3>More Games</h3>
+        <ul id="sidebar-list"></ul>
+
+        <div class="sidebar-ad">
+          <!-- Paste AdSense ad here if you want -->
+        </div>
+      </div>
+
     </div>
 
-    <div class="sidebar">
-      <h3>Other Games</h3>
-      <ul id="sidebar-list"></ul>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <p>© 2026 Zovi Games. All rights reserved.</p>
+      <p>
+        Contact:
+        <a href="mailto:youremail@example.com">youremail@example.com</a>
+      </p>
     </div>
-  </div>
+  </footer>
 
   <script>
-    (function() {
-      const params = new URLSearchParams(window.location.search);
-      const currentGame = params.get("game") || "geometry-dash";
+    const params = new URLSearchParams(window.location.search);
+    const currentGame = params.get("game");
 
-      // Load current game iframe
-      const gameFrame = document.getElementById("game-frame");
-      gameFrame.src = `games/${currentGame}.html`;
+    const frame = document.getElementById("game-frame");
+    frame.src = `games/${currentGame}.html`;
 
-      // Populate sidebar with icons
-      fetch("games.json")
-        .then(res => res.json())
-        .then(games => {
-          const sidebar = document.getElementById("sidebar-list");
-          games.forEach(game => {
-            if (game.file !== currentGame) {
-              const li = document.createElement("li");
-              li.innerHTML = `
-                <a href="game.html?game=${game.file}">
-                  <img src="assets/${game.thumb}" alt="${game.name}">
-                  <span>${game.name}</span>
-                </a>
-              `;
-              sidebar.appendChild(li);
-            }
-          });
-        })
-        .catch(err => console.error("Failed to load games.json:", err));
-
-      // Fullscreen toggle
-      document.getElementById("fullscreen-btn").addEventListener("click", () => {
-        if (!document.fullscreenElement) {
-          gameFrame.requestFullscreen().catch(err => console.error(err));
-        } else {
-          document.exitFullscreen();
-        }
+    // Load sidebar icons
+    fetch("games.json")
+      .then(res => res.json())
+      .then(games => {
+        const sidebar = document.getElementById("sidebar-list");
+        games.forEach(game => {
+          if (game.file !== currentGame) {
+            const li = document.createElement("li");
+            li.innerHTML = `
+              <a href="game.html?game=${game.file}">
+                <img src="assets/${game.thumb}">
+                <span>${game.name}</span>
+              </a>
+            `;
+            sidebar.appendChild(li);
+          }
+        });
       });
 
-      // Play / Pause buttons
-      const playBtn = document.getElementById("play-btn");
-      const pauseBtn = document.getElementById("pause-btn");
-
-      playBtn.addEventListener("click", () => {
-        gameFrame.contentWindow.postMessage({ action: "play" }, "*");
-      });
-
-      pauseBtn.addEventListener("click", () => {
-        gameFrame.contentWindow.postMessage({ action: "pause" }, "*");
-      });
-    })();
+    // Fullscreen
+    document.getElementById("fullscreen-btn").onclick = () => {
+      if (frame.requestFullscreen) frame.requestFullscreen();
+    };
   </script>
 
-<footer class="site-footer">
-  <div class="footer-content">
-    <p>© 2026 Zovi Games. All rights reserved.</p>
-    <p>
-      Contact: 
-      <a href="mailto:thearam@protonmail.com">thearam@protonmail.com</a>
-    </p>
-  </div>
-</footer>
-  
 </body>
 </html>
