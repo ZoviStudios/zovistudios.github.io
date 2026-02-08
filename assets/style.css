@@ -101,11 +101,11 @@ body {
   box-shadow: 0 0 12px #ff3d3d;
 }
 
-/* Card hover effects */
 .game-card:hover {
   transform: scale(1.05) translateY(-3px);
-  filter: drop-shadow(0 0 12px #4cafeb);
+  /* Glow now handled dynamically via JS */
 }
+
 
 .game-card.hot:hover {
   filter: drop-shadow(0 0 15px #ff3d3d);
