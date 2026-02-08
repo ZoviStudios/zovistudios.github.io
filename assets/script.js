@@ -39,6 +39,17 @@ fetch("games.json")
           sidebar.appendChild(li);
         }
       }
+
+      const star = document.createElement("div");
+      star.innerHTML = "⭐";
+      star.className = "fav-star";
+      star.onclick = (e) => {
+        e.stopPropagation();
+        toggleFavorite(game);
+      };
+      card.appendChild(star);
+
+      
     });
   })
   .catch(err => console.error("Failed to load games:", err));
@@ -117,3 +128,12 @@ function loadRecentlyPlayed() {
   });
 }
 
+function toggleFavorite(game) {
+  let favs = JSON.parse(localStorage.getItem("favorites")) || [];
+  if (favs.find(g => g.name === game.name)) {
+    favs = favs.filter(g => g.name !== game.name);
+  } else {
+    favs.push(game);
+  }
+  localStorage.setItem("favorites", JSON.stringify(favs));
+}
