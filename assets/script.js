@@ -137,3 +137,14 @@ function toggleFavorite(game) {
   }
   localStorage.setItem("favorites", JSON.stringify(favs));
 }
+
+function loadFavorites() {
+  const container = document.getElementById("favorite-games");
+  if (!container) return;
+
+  const favs = JSON.parse(localStorage.getItem("favorites")) || [];
+  favs.forEach(game => {
+    const card = createGameCard(game);
+    container.appendChild(card);
+  });
+}
