@@ -14,18 +14,31 @@
 
     <div class="sidebar">
       <h3>Other Games</h3>
-      <ul>
-        <li><a href="game.html?game=geometry-dash">Geometry Dash</a></li>
-        <li><a href="game.html?game=slope">Slope</a></li>
-        <!-- Add more games here -->
-      </ul>
+      <ul id="sidebar-list"></ul>
     </div>
   </div>
 
   <script>
+    const games = [
+      { name: "Geometry Dash", file: "geometry-dash", thumb: "geometry-dash-thumb.png" },
+      { name: "Slope", file: "slope", thumb: "slope-thumb.png" },
+      // add more here
+    ];
+
+    // Load current game from URL
     const params = new URLSearchParams(window.location.search);
-    const game = params.get('game') || 'geometry-dash';
-    document.getElementById('game-frame').src = `games/${game}.html`;
+    const currentGame = params.get("game") || "geometry-dash";
+    document.getElementById("game-frame").src = `games/${currentGame}.html`;
+
+    // Populate sidebar
+    const sidebar = document.getElementById("sidebar-list");
+    games.forEach(game => {
+      if (game.file !== currentGame) { // hide current game
+        const li = document.createElement("li");
+        li.innerHTML = `<a href="game.html?game=${game.file}">${game.name}</a>`;
+        sidebar.appendChild(li);
+      }
+    });
   </script>
 </body>
 </html>
