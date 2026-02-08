@@ -5,10 +5,20 @@
   padding: 0;
 }
 
+/* ===== Homepage background ===== */
 body {
   font-family: 'Segoe UI', sans-serif;
-  background: #121212;
+  background: linear-gradient(270deg, #121212, #1a1a1a, #121212);
+  background-size: 600% 600%;
+  animation: gradientAnim 20s ease infinite;
   color: #fff;
+}
+
+/* Gradient animation */
+@keyframes gradientAnim {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
 }
 
 /* ===== Top Navigation Bar ===== */
@@ -57,11 +67,11 @@ body {
   height: auto !important;
 }
 
-/* ===== Homepage Sections ===== */
+/* Adjust HOT GAMES section margin */
 .section-title {
   font-size: 1.8rem;
   color: #4cafeb;
-  margin: 20px 0 10px 20px;
+  margin: 15px 0 8px 15px;
   text-shadow: 0 0 8px #4cafeb;
 }
 
@@ -73,8 +83,8 @@ body {
 .game-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px; /* smaller than before */
-  padding: 0 20px;
+  gap: 6px; /* smaller gap for tighter layout */
+  padding: 0 10px; /* reduce padding */
   justify-items: center;
 }
 
@@ -182,13 +192,9 @@ iframe {
   transform: scale(1.05);
 }
 
-/* ===== Sidebar ===== */
+/* Adjust sidebar padding */
 .sidebar {
-  flex: 1;
-  background: #1e1e1e;
-  padding: 20px;
-  overflow-y: auto;
-  border-left: 1px solid #333;
+  padding: 15px;
 }
 
 .sidebar h3 {
@@ -201,8 +207,9 @@ iframe {
   list-style: none;
 }
 
+/* Reduce spacing between sidebar items */
 .sidebar ul li {
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .sidebar ul li a {
@@ -216,11 +223,13 @@ iframe {
   text-decoration: none;
 }
 
+/* Sidebar icon glow */
 .sidebar ul li a img {
   width: 30px;
   height: 30px;
   border-radius: 6px;
   object-fit: cover;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .sidebar ul li a span {
@@ -228,10 +237,9 @@ iframe {
   font-size: 0.9rem;
 }
 
-.sidebar ul li a:hover {
-  background: #4cafeb;
-  color: #121212;
-  transform: scale(1.05);
+/* On hover, scale icons slightly */
+.sidebar ul li a:hover img {
+  transform: scale(1.1);
 }
 
 /* Sidebar ad */
@@ -253,16 +261,6 @@ iframe {
     border-top: 1px solid #333;
   }
 }
-/* Sidebar icon glow */
-.sidebar ul li a img {
-  width: 30px;
-  height: 30px;
-  border-radius: 6px;
-  object-fit: cover;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
 
-/* On hover, scale icons slightly */
-.sidebar ul li a:hover img {
-  transform: scale(1.1);
-}
+
+
