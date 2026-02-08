@@ -151,4 +151,29 @@ iframe {
     border-left: none;
     border-top: 1px solid #333;
   }
+
 }
+
+/* Game controls panel below iframe */
+.game-controls {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end; /* button on the right */
+}
+
+.game-controls button {
+  padding: 6px 12px;
+  background: #4cafeb;
+  border: none;
+  border-radius: 6px;
+  color: #121212;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.game-controls button:hover {
+  background: #3b8edc;
+  transform: scale(1.05);
+}
+
