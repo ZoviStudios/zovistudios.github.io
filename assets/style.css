@@ -25,10 +25,10 @@ main {
   flex: 1;
 }
 
-/* ===== Top Navigation Full-Height Logo ===== */
+/* ===== Top Navigation ===== */
 .top-nav {
   background: #0f1426;
-  height: 100px;           /* fix the nav height */
+  height: 100px;           /* height of the navigation panel */
   padding: 0 30px;
   display: flex;
   align-items: center;
@@ -36,9 +36,9 @@ main {
   border-bottom: 2px solid #1f2a44;
 }
 
-/* Logo fills the entire nav height, keep proportions */
+/* Logo fits inside the nav height */
 .logo {
-  height: 100%;           /* full height of top-nav */
+  max-height: 90%;        /* slightly smaller than nav height for padding */
   width: auto;            /* maintain proportions */
   cursor: pointer;
   transition: transform 0.2s;
@@ -48,10 +48,10 @@ main {
   transform: scale(1.05);
 }
 
-/* Search bar all the way to the left, next to logo */
+/* Search bar next to logo */
 .search-bar {
   flex: 0 0 250px;        /* fixed width */
-  margin-left: 0;         /* remove gap, directly next to logo */
+  margin-left: 0;         /* directly next to logo */
   padding: 10px 15px;
   border-radius: 12px;
   border: 1px solid #1d2540;
@@ -68,6 +68,7 @@ main {
     0 0 8px var(--accent-blue),
     0 0 16px var(--accent-purple);
 }
+
 
 
 .search-bar::placeholder {
