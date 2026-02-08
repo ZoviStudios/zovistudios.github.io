@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Zovi Arcade | Play Game</title>
 <style>
+    /* Reset & body */
     body {
         margin: 0;
         font-family: 'Poppins', sans-serif;
@@ -12,6 +13,7 @@
         display: flex;
         flex-direction: row;
         height: 100vh;
+        overflow: hidden;
     }
 
     /* Main game area */
@@ -23,13 +25,19 @@
         padding: 20px;
         background: #11111f;
     }
+
     .main-game iframe {
         width: 100%;
-        height: 100%;
-        max-width: 960px;
+        max-width: 100%;
+        aspect-ratio: 16 / 9; /* widescreen ratio */
         border-radius: 12px;
         border: none;
         box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+        transition: transform 0.3s;
+    }
+
+    .main-game iframe:hover {
+        transform: scale(1.02);
     }
 
     /* Sidebar */
@@ -40,20 +48,33 @@
         overflow-y: auto;
         box-shadow: -5px 0 30px rgba(0,0,0,0.5);
     }
+
     .sidebar h2 {
         color: #00f6ff;
         margin-bottom: 20px;
         text-align: center;
     }
+
     .sidebar .game-card {
         margin-bottom: 20px;
         cursor: pointer;
-        transition: transform 0.2s;
         text-align: center;
+        transition: transform 0.2s, box-shadow 0.2s;
+        color: #fff;
+        border-radius: 8px;
+        padding: 5px;
     }
+
     .sidebar .game-card:hover {
         transform: scale(1.03);
+        box-shadow: 0 0 20px #00f6ff;
     }
+
+    .sidebar .game-card.active {
+        border: 2px solid #00f6ff;
+        box-shadow: 0 0 15px #00f6ff;
+    }
+
     .sidebar img {
         width: 100%;
         border-radius: 8px;
@@ -84,22 +105,22 @@
 <div class="sidebar">
     <h2>Other Games</h2>
 
-    <div class="game-card" onclick="loadGame('https://ozgames.io/geometry-dash.embed')">
+    <div class="game-card" data-file="games/geometry-dash.html">
         <img src="assets/images/geometry-dash-thumb.png" alt="Geometry Dash">
         <p>Geometry Dash</p>
     </div>
 
-    <div class="game-card" onclick="loadGame('https://ozgames.io/slope.embed')">
+    <div class="game-card" data-file="games/slope.html">
         <img src="assets/images/slope-thumb.png" alt="Slope">
         <p>Slope</p>
     </div>
 
-    <div class="game-card" onclick="loadGame('https://ozgames.io/krunker.embed')">
+    <div class="game-card" data-file="games/krunker.html">
         <img src="assets/images/krunker-thumb.png" alt="Krunker">
         <p>Krunker</p>
     </div>
 
-    <div class="game-card" onclick="loadGame('https://ozgames.io/subway-surfers.embed')">
+    <div class="game-card" data-file="games/subway-surfers.html">
         <img src="assets/images/subway-surfers-thumb.png" alt="Subway Surfers">
         <p>Subway Surfers</p>
     </div>
@@ -107,17 +128,33 @@
 </div>
 
 <script>
-    // Get game from query parameter
-    const params = new URLSearchParams(window.location.search);
-    const gameURL = params.get('game');
+const params = new URLSearchParams(window.location.search);
+let currentGame = params.get('game') || 'games/geometry-dash.html';
+const gameFrame = document.getElementById('gameFrame');
+const cards = document.querySelectorAll('.sidebar .game-card');
 
-    // If no game is passed, load first one by default
-    document.getElementById('gameFrame').src = gameURL || 'https://ozgames.io/geometry-dash.embed';
+function highlightActive() {
+    cards.forEach(card => {
+        if(card.dataset.file === currentGame) {
+            card.classList.add('active');
+        } else {
+            card.classList.remove('active');
+        }
+    });
+}
 
-    // Load game from sidebar
-    function loadGame(url) {
-        document.getElementById('gameFrame').src = url;
-    }
+// Load initial game
+gameFrame.src = currentGame;
+highlightActive();
+
+// Sidebar click event
+cards.forEach(card => {
+    card.addEventListener('click', () => {
+        currentGame = card.dataset.file;
+        gameFrame.src = currentGame;
+        highlightActive();
+    });
+});
 </script>
 
 </body>
