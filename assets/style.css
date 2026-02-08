@@ -230,3 +230,35 @@ main {
   color: var(--accent-blue);
   text-decoration: none;
 }
+
+/* ===== Responsive Navigation ===== */
+@media (max-width: 900px) {
+  .top-nav {
+    flex-wrap: wrap;          /* wrap logo and search if too narrow */
+    height: auto;             /* allow nav to grow if wrapped */
+    padding: 15px 20px;
+    gap: 15px;
+  }
+
+  .logo {
+    max-height: 70px;         /* scale down on smaller screens */
+    width: auto;
+  }
+
+  .search-bar {
+    flex: 1 1 auto;           /* let search expand to fill available space */
+    max-width: 300px;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 500px) {
+  .top-nav {
+    justify-content: center;   /* center everything on very small screens */
+  }
+
+  .search-bar {
+    max-width: 100%;           /* take full width under logo */
+  }
+}
+
