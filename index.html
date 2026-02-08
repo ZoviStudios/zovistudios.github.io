@@ -2,131 +2,47 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zovi Arcade</title>
+  <title>Zovi Games</title>
   <link rel="stylesheet" href="assets/style.css">
 </head>
+
 <body>
-  <!-- Top navigation bar with logo -->
-  <header class="top-nav">
+
+  <!-- Top Navigation -->
+  <div class="top-nav">
     <a href="index.html" class="logo-link">
-      <img src="assets/Zovi_Games_logo.png" alt="Zovi Games Logo" class="logo">
+      <img src="assets/logo.png" class="logo">
     </a>
-  </header>
-
-  <!-- Top banner ad -->
-  <div class="ad-banner">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3531802908860882"
-     crossorigin="anonymous"></script>
   </div>
 
-  <!-- HOT GAMES section -->
-  <section class="game-section">
+  <main>
+
+    <!-- Ad banner -->
+    <div class="ad-banner">
+      <!-- Paste your AdSense ad unit here -->
+    </div>
+
+    <!-- HOT GAMES -->
     <h2 class="section-title">🔥 HOT GAMES</h2>
-    <div class="game-list" id="hot-games">
-      <!-- Populated dynamically -->
-    </div>
-  </section>
+    <div id="hot-games" class="game-list"></div>
 
-  <!-- ALL GAMES section -->
-  <section class="game-section">
+    <!-- ALL GAMES -->
     <h2 class="section-title">🎮 ALL GAMES</h2>
-    <div class="game-list" id="all-games">
-      <!-- Populated dynamically -->
+    <div id="all-games" class="game-list"></div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <p>© 2026 Zovi Games. All rights reserved.</p>
+      <p>
+        Contact:
+        <a href="mailto:youremail@example.com">youremail@example.com</a>
+      </p>
     </div>
-  </section>
+  </footer>
 
-  <script>
-function getDominantColor(imgSrc, callback) {
-  const img = new Image();
-  img.crossOrigin = "Anonymous"; // Needed if hosted externally
-  img.src = imgSrc;
-  img.onload = () => {
-    const canvas = document.createElement("canvas");
-    canvas.width = img.width;
-    canvas.height = img.height;
-    const ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0);
-    const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-
-    let r = 0, g = 0, b = 0, count = 0;
-    for (let i = 0; i < data.length; i += 4) {
-      const alpha = data[i+3];
-      if (alpha > 128) {
-        r += data[i];
-        g += data[i+1];
-        b += data[i+2];
-        count++;
-      }
-    }
-    r = Math.floor(r / count);
-    g = Math.floor(g / count);
-    b = Math.floor(b / count);
-    callback(`rgb(${r},${g},${b})`);
-  };
-  img.onerror = () => callback("#4cafeb");
-}
-
-fetch("games.json")
-  .then(res => res.json())
-  .then(games => {
-    const hotContainer = document.getElementById("hot-games");
-    const allContainer = document.getElementById("all-games");
-    const sidebar = document.getElementById("sidebar-list");
-
-    function createCard(game) {
-      const card = document.createElement("a");
-      card.href = `game.html?game=${game.file}`;
-      card.className = "game-card";
-      card.innerHTML = `
-        <img src="assets/${game.thumb}" alt="${game.name}">
-        <span>${game.name}</span>
-      `;
-      getDominantColor(`assets/${game.thumb}`, color => {
-        card.style.boxShadow = `0 0 12px ${color}`;
-        card.onmouseover = () => card.style.filter = `drop-shadow(0 0 15px ${color})`;
-        card.onmouseout = () => card.style.filter = `drop-shadow(0 0 0px transparent)`;
-      });
-      return card;
-    }
-
-    function createSidebarIcon(game) {
-      const li = document.createElement("li");
-      li.innerHTML = `
-        <a href="game.html?game=${game.file}">
-          <img src="assets/${game.thumb}" alt="${game.name}">
-          <span>${game.name}</span>
-        </a>
-      `;
-      const img = li.querySelector("img");
-      getDominantColor(`assets/${game.thumb}`, color => {
-        img.style.boxShadow = `0 0 6px ${color}`;
-      });
-      return li;
-    }
-
-    // HOT games - first 4
-    games.slice(0,4).forEach(game => hotContainer.appendChild(createCard(game)));
-
-    // ALL games
-    games.forEach(game => allContainer.appendChild(createCard(game)));
-
-    // Sidebar icons
-    games.forEach(game => sidebar.appendChild(createSidebarIcon(game)));
-  })
-  .catch(err => console.error("Failed to load games.json:", err));
-</script>
-  
-<footer class="site-footer">
-  <div class="footer-content">
-    <p>© 2026 Zovi Games. All rights reserved.</p>
-    <p>
-      Contact: 
-      <a href="mailto:thearam@protonmail.com">thearam@protonmail.com</a>
-    </p>
-  </div>
-</footer>
-
-
+  <script src="assets/script.js"></script>
 </body>
 </html>
