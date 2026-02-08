@@ -7,6 +7,13 @@
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+  <!-- Top navigation bar -->
+  <header class="top-nav">
+    <a href="index.html" class="logo-link">
+      <img src="assets/Zovi_Games_logo.png" alt="Zovi Games Logo" class="logo">
+    </a>
+  </header>
+
   <div class="game-page">
     <div class="game-container">
       <iframe id="game-frame" src="" allowfullscreen></iframe>
@@ -14,8 +21,7 @@
       <!-- Arcade control panel -->
       <div class="game-controls">
         <button id="fullscreen-btn">Fullscreen</button>
-        <button id="back-btn">Back to Homepage</button>
-        <!-- Optional volume/play buttons -->
+        <!-- Optional play/pause buttons -->
         <button id="play-btn">Play</button>
         <button id="pause-btn">Pause</button>
       </div>
@@ -65,13 +71,7 @@
         }
       });
 
-      // Back to homepage
-      document.getElementById("back-btn").addEventListener("click", () => {
-        window.location.href = "index.html";
-      });
-
       // Play / Pause buttons
-      // Works only if iframe content supports postMessage or simple HTML5 audio/video
       const playBtn = document.getElementById("play-btn");
       const pauseBtn = document.getElementById("pause-btn");
 
