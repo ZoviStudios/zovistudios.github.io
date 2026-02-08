@@ -22,10 +22,10 @@
     const params = new URLSearchParams(window.location.search);
     const currentGame = params.get("game") || "geometry-dash";
 
-    // Load game iframe
+    // Load current game
     document.getElementById("game-frame").src = `games/${currentGame}.html`;
 
-    // Populate sidebar
+    // Populate sidebar with icons
     fetch("games.json")
       .then(res => res.json())
       .then(games => {
@@ -33,7 +33,12 @@
         games.forEach(game => {
           if (game.file !== currentGame) {
             const li = document.createElement("li");
-            li.innerHTML = `<a href="game.html?game=${game.file}">${game.name}</a>`;
+            li.innerHTML = `
+              <a href="game.html?game=${game.file}">
+                <img src="assets/${game.thumb}" alt="${game.name}">
+                <span>${game.name}</span>
+              </a>
+            `;
             sidebar.appendChild(li);
           }
         });
