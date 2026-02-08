@@ -10,6 +10,11 @@
   <div class="game-page">
     <div class="game-container">
       <iframe id="game-frame" src="" allowfullscreen></iframe>
+
+      <!-- Control panel below iframe -->
+      <div class="game-controls">
+        <button id="fullscreen-btn">Toggle Fullscreen</button>
+      </div>
     </div>
 
     <div class="sidebar">
@@ -19,31 +24,44 @@
   </div>
 
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const currentGame = params.get("game") || "geometry-dash";
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      const currentGame = params.get("game") || "geometry-dash";
 
-    // Load current game
-    document.getElementById("game-frame").src = `games/${currentGame}.html`;
+      // Load current game iframe
+      const gameFrame = document.getElementById("game-frame");
+      gameFrame.src = `games/${currentGame}.html`;
 
-    // Populate sidebar with icons
-    fetch("games.json")
-      .then(res => res.json())
-      .then(games => {
-        const sidebar = document.getElementById("sidebar-list");
-        games.forEach(game => {
-          if (game.file !== currentGame) {
-            const li = document.createElement("li");
-            li.innerHTML = `
-              <a href="game.html?game=${game.file}">
-                <img src="assets/${game.thumb}" alt="${game.name}">
-                <span>${game.name}</span>
-              </a>
-            `;
-            sidebar.appendChild(li);
-          }
-        });
-      })
-      .catch(err => console.error("Failed to load games.json:", err));
+      // Populate sidebar with icons
+      fetch("games.json")
+        .then(res => res.json())
+        .then(games => {
+          const sidebar = document.getElementById("sidebar-list");
+          games.forEach(game => {
+            if (game.file !== currentGame) {
+              const li = document.createElement("li");
+              li.innerHTML = `
+                <a href="game.html?game=${game.file}">
+                  <img src="assets/${game.thumb}" alt="${game.name}">
+                  <span>${game.name}</span>
+                </a>
+              `;
+              sidebar.appendChild(li);
+            }
+          });
+        })
+        .catch(err => console.error("Failed to load games.json:", err));
+
+      // Fullscreen toggle
+      const fullscreenBtn = document.getElementById("fullscreen-btn");
+      fullscreenBtn.addEventListener("click", () => {
+        if (!document.fullscreenElement) {
+          gameFrame.requestFullscreen().catch(err => console.error(err));
+        } else {
+          document.exitFullscreen();
+        }
+      });
+    })();
   </script>
 </body>
 </html>
