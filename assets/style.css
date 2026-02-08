@@ -5,7 +5,6 @@
   padding: 0;
 }
 
-/* ===== Homepage background ===== */
 body {
   font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(270deg, #121212, #1a1a1a, #121212);
@@ -67,7 +66,7 @@ body {
   height: auto !important;
 }
 
-/* Adjust HOT GAMES section margin */
+/* ===== Homepage Sections ===== */
 .section-title {
   font-size: 1.8rem;
   color: #4cafeb;
@@ -76,15 +75,15 @@ body {
 }
 
 .game-section {
-  padding-bottom: 30px;
+  padding-bottom: 20px;
 }
 
-/* Tighter spacing for game grids */
+/* Grid for game cards */
 .game-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 6px; /* smaller gap for tighter layout */
-  padding: 0 10px; /* reduce padding */
+  gap: 6px; /* tighter spacing */
+  padding: 0 10px;
   justify-items: center;
 }
 
@@ -106,23 +105,6 @@ body {
   animation: fadeInUp 0.5s forwards;
 }
 
-.game-card.hot {
-  border: 2px solid #ff3d3d;
-  box-shadow: 0 0 12px #ff3d3d;
-}
-
-.game-card:hover {
-  transform: scale(1.05) translateY(-3px);
-  /* Glow now handled dynamically via JS */
-}
-
-
-.game-card.hot:hover {
-  filter: drop-shadow(0 0 15px #ff3d3d);
-  transform: scale(1.07) translateY(-5px);
-}
-
-/* Card images */
 .game-card img {
   width: 100%;
   max-width: 150px;
@@ -137,6 +119,15 @@ body {
   font-weight: bold;
   font-size: 1rem;
   color: #fff;
+}
+
+/* Hover scaling & glow handled via JS dynamic color */
+.game-card:hover {
+  transform: scale(1.05) translateY(-3px);
+}
+
+.game-card.hot:hover {
+  transform: scale(1.07) translateY(-5px);
 }
 
 /* Fade-in animation */
@@ -192,9 +183,13 @@ iframe {
   transform: scale(1.05);
 }
 
-/* Adjust sidebar padding */
+/* ===== Sidebar ===== */
 .sidebar {
+  flex: 1;
+  background: #1e1e1e;
   padding: 15px;
+  overflow-y: auto;
+  border-left: 1px solid #333;
 }
 
 .sidebar h3 {
@@ -207,9 +202,8 @@ iframe {
   list-style: none;
 }
 
-/* Reduce spacing between sidebar items */
 .sidebar ul li {
-  margin-bottom: 4px;
+  margin-bottom: 4px; /* tighter spacing */
 }
 
 .sidebar ul li a {
@@ -223,7 +217,6 @@ iframe {
   text-decoration: none;
 }
 
-/* Sidebar icon glow */
 .sidebar ul li a img {
   width: 30px;
   height: 30px;
@@ -237,9 +230,8 @@ iframe {
   font-size: 0.9rem;
 }
 
-/* On hover, scale icons slightly */
-.sidebar ul li a:hover img {
-  transform: scale(1.1);
+.sidebar ul li a:hover {
+  transform: scale(1.05);
 }
 
 /* Sidebar ad */
@@ -261,6 +253,3 @@ iframe {
     border-top: 1px solid #333;
   }
 }
-
-
-
