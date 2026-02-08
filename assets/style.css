@@ -36,10 +36,10 @@ main {
   border-bottom: 2px solid #1f2a44;
 }
 
-/* Logo fits inside the nav height */
+/* Logo back to normal size */
 .logo {
-  max-height: 90%;        /* slightly smaller than nav height for padding */
-  width: auto;            /* maintain proportions */
+  height: 70px;            /* original size */
+  width: auto;             /* maintain proportions */
   cursor: pointer;
   transition: transform 0.2s;
 }
@@ -68,7 +68,6 @@ main {
     0 0 8px var(--accent-blue),
     0 0 16px var(--accent-purple);
 }
-
 
 
 .search-bar::placeholder {
