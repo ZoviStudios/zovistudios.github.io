@@ -16,24 +16,22 @@
   </main>
 
   <script>
-    const games = [
-      { name: "Geometry Dash", file: "geometry-dash", thumb: "geometry-dash-thumb.png" },
-      { name: "Slope", file: "slope", thumb: "slope-thumb.png" },
-      // add more games here
-    ];
-
-    const gameList = document.getElementById("game-list");
-
-    games.forEach(game => {
-      const card = document.createElement("a");
-      card.href = `game.html?game=${game.file}`;
-      card.className = "game-card";
-      card.innerHTML = `
-        <img src="assets/${game.thumb}" alt="${game.name}">
-        <span>${game.name}</span>
-      `;
-      gameList.appendChild(card);
-    });
+    fetch("games.json")
+      .then(res => res.json())
+      .then(games => {
+        const gameList = document.getElementById("game-list");
+        games.forEach(game => {
+          const card = document.createElement("a");
+          card.href = `game.html?game=${game.file}`;
+          card.className = "game-card";
+          card.innerHTML = `
+            <img src="assets/${game.thumb}" alt="${game.name}">
+            <span>${game.name}</span>
+          `;
+          gameList.appendChild(card);
+        });
+      })
+      .catch(err => console.error("Failed to load games.json:", err));
   </script>
 </body>
 </html>
