@@ -1,89 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zovi Arcade | Play Game</title>
-<style>
-body { margin:0; font-family:'Poppins',sans-serif; background:#0f0f1e; display:flex; flex-direction:row; height:100vh; overflow:hidden; }
-
-/* Main Game */
-.main-game { flex:3; display:flex; justify-content:center; align-items:center; padding:20px; background:#11111f; }
-.main-game iframe { width:100%; max-width:100%; aspect-ratio:16/9; border-radius:12px; border:none; box-shadow:0 10px 30px rgba(0,0,0,0.7); transition: transform 0.3s; }
-.main-game iframe:hover { transform: scale(1.02); }
-
-/* Sidebar */
-.sidebar { flex:1; background:#1b1b2f; padding:20px; overflow-y:auto; box-shadow:-5px 0 30px rgba(0,0,0,0.5); }
-.sidebar h2 { color:#00f6ff; margin-bottom:20px; text-align:center; }
-.sidebar .game-card { margin-bottom:20px; cursor:pointer; text-align:center; transition: transform 0.2s, box-shadow 0.2s; color:#fff; border-radius:8px; padding:5px; }
-.sidebar .game-card:hover { transform: scale(1.03); box-shadow:0 0 20px #00f6ff; }
-.sidebar .game-card.active { border:2px solid #00f6ff; box-shadow:0 0 15px #00f6ff; }
-.sidebar img { width:100%; border-radius:8px; margin-bottom:5px; }
-
-@media(max-width:768px){ body{flex-direction:column;} .sidebar{display:flex;flex-direction:row;overflow-x:auto;padding:10px;} .sidebar .game-card{min-width:200px;margin-right:10px;} .main-game{height:60vh;} }
-@media(max-width:480px){ .main-game iframe{height:300px;} .sidebar .game-card{min-width:150px;} }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zovi Arcade Game</title>
+  <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+  <div class="game-container">
+    <iframe id="game-frame" src="" frameborder="0" allowfullscreen></iframe>
+  </div>
 
-<div class="main-game">
-<iframe id="gameFrame" src="" allowfullscreen></iframe>
-</div>
+  <div class="sidebar">
+    <h3>Other Games</h3>
+    <ul>
+      <li><a href="game.html?game=geometry-dash">Geometry Dash</a></li>
+      <li><a href="game.html?game=slope">Slope</a></li>
+      <!-- Add more games here -->
+    </ul>
+  </div>
 
-<div class="sidebar">
-<h2>Other Games</h2>
-
-<div class="game-card" data-file="games/geometry-dash.html">
-<img src="assets/images/geometry-dash-thumb.png" alt="Geometry Dash">
-<p>Geometry Dash</p>
-</div>
-
-<div class="game-card" data-file="games/slope.html">
-<img src="assets/images/slope-thumb.png" alt="Slope">
-<p>Slope</p>
-</div>
-
-<div class="game-card" data-file="games/krunker.html">
-<img src="assets/images/krunker-thumb.png" alt="Krunker">
-<p>Krunker</p>
-</div>
-
-<div class="game-card" data-file="games/subway-surfers.html">
-<img src="assets/images/subway-surfers-thumb.png" alt="Subway Surfers">
-<p>Subway Surfers</p>
-</div>
-
-</div>
-
-<script>
-const params = new URLSearchParams(window.location.search);
-let currentGame = params.get('game') || 'games/geometry-dash.html';
-const gameFrame = document.getElementById('gameFrame');
-const cards = document.querySelectorAll('.sidebar .game-card');
-
-function highlightActive() {
-    cards.forEach(card => {
-        if(card.dataset.file === currentGame){
-            card.classList.add('active');
-        } else {
-            card.classList.remove('active');
-        }
-    });
-}
-
-// Load initial game
-gameFrame.src = currentGame;
-highlightActive();
-
-// Sidebar click
-cards.forEach(card => {
-    card.addEventListener('click', (e) => {
-        currentGame = card.dataset.file;
-        gameFrame.src = currentGame;
-        highlightActive();
-    });
-});
-</script>
-
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const game = params.get('game') || 'geometry-dash';
+    document.getElementById('game-frame').src = `games/${game}.html`;
+  </script>
 </body>
 </html>
