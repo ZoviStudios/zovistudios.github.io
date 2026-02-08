@@ -25,45 +25,6 @@ header h1 {
   color: #4cafeb;
 }
 
-/* Homepage grid */
-.game-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 20px;
-  padding: 20px;
-}
-
-.game-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  background: #1e1e1e;
-  border-radius: 12px;
-  overflow: hidden;
-  text-decoration: none;
-  color: #fff;
-  transition: transform 0.3s, box-shadow 0.3s;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-}
-
-.game-card:hover {
-  transform: translateY(-5px) scale(1.05);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
-}
-
-.game-card img {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-}
-
-.game-card span {
-  padding: 10px 0;
-  font-weight: bold;
-  font-size: 1rem;
-}
-
 /* Game page layout */
 .game-page {
   display: flex;
@@ -84,6 +45,7 @@ iframe {
   border: none;
 }
 
+/* Sidebar styling */
 .sidebar {
   flex: 1;
   background: #1e1e1e;
@@ -98,27 +60,41 @@ iframe {
   font-size: 1.2rem;
 }
 
+/* Sidebar list with icons */
 .sidebar ul {
   list-style: none;
 }
 
-.sidebar li {
+.sidebar ul li {
   margin-bottom: 10px;
 }
 
-.sidebar a {
-  color: #fff;
-  text-decoration: none;
-  font-weight: 500;
-  display: block;
-  padding: 8px;
+.sidebar ul li a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
   border-radius: 8px;
   transition: 0.2s;
+  color: #fff;
+  text-decoration: none;
 }
 
-.sidebar a:hover {
+.sidebar ul li a img {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.sidebar ul li a span {
+  flex: 1;
+}
+
+.sidebar ul li a:hover {
   background: #4cafeb;
   color: #121212;
+  transform: scale(1.05);
 }
 
 /* Responsive for mobile */
