@@ -37,37 +37,73 @@
   </section>
 
   <script>
-    fetch("games.json")
-      .then(res => res.json())
-      .then(games => {
-        const hotContainer = document.getElementById("hot-games");
-        const allContainer = document.getElementById("all-games");
+function getDominantColor(imgSrc, callback) {
+  const img = new Image();
+  img.crossOrigin = "Anonymous"; // Needed if hosted externally
+  img.src = imgSrc;
+  img.onload = () => {
+    const canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+    const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
 
-        // HOT games - first 4
-        games.slice(0,4).forEach(game => {
-          const card = document.createElement("a");
-          card.href = `game.html?game=${game.file}`;
-          card.className = "game-card hot";
-          card.innerHTML = `
-            <img src="assets/${game.thumb}" alt="${game.name}">
-            <span>${game.name}</span>
-          `;
-          hotContainer.appendChild(card);
-        });
+    let r = 0, g = 0, b = 0, count = 0;
+    for (let i = 0; i < data.length; i += 4) {
+      const alpha = data[i+3];
+      if (alpha > 128) { // ignore transparent pixels
+        r += data[i];
+        g += data[i+1];
+        b += data[i+2];
+        count++;
+      }
+    }
+    r = Math.floor(r / count);
+    g = Math.floor(g / count);
+    b = Math.floor(b / count);
+    callback(`rgb(${r},${g},${b})`);
+  };
+  img.onerror = () => callback("#4cafeb"); // fallback color
+}
 
-        // ALL games
-        games.forEach(game => {
-          const card = document.createElement("a");
-          card.href = `game.html?game=${game.file}`;
-          card.className = "game-card";
-          card.innerHTML = `
-            <img src="assets/${game.thumb}" alt="${game.name}">
-            <span>${game.name}</span>
-          `;
-          allContainer.appendChild(card);
-        });
-      })
-      .catch(err => console.error("Failed to load games.json:", err));
-  </script>
+fetch("games.json")
+  .then(res => res.json())
+  .then(games => {
+    const hotContainer = document.getElementById("hot-games");
+    const allContainer = document.getElementById("all-games");
+
+    function createCard(game) {
+      const card = document.createElement("a");
+      card.href = `game.html?game=${game.file}`;
+      card.className = "game-card";
+      card.innerHTML = `
+        <img src="assets/${game.thumb}" alt="${game.name}">
+        <span>${game.name}</span>
+      `;
+      // Automatically get dominant color from thumbnail
+      getDominantColor(`assets/${game.thumb}`, color => {
+        card.style.boxShadow = `0 0 12px ${color}`;
+        card.onmouseover = () => card.style.filter = `drop-shadow(0 0 15px ${color})`;
+        card.onmouseout = () => card.style.filter = `drop-shadow(0 0 0px transparent)`;
+      });
+      return card;
+    }
+
+    // HOT games - first 4
+    games.slice(0,4).forEach(game => {
+      const card = createCard(game);
+      hotContainer.appendChild(card);
+    });
+
+    // ALL games
+    games.forEach(game => {
+      const card = createCard(game);
+      allContainer.appendChild(card);
+    });
+  })
+  .catch(err => console.error("Failed to load games.json:", err));
+</script>
+
 </body>
 </html>
