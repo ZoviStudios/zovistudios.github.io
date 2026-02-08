@@ -94,3 +94,26 @@ const currentGame = urlParams.get("game");
 if (currentGame && gameFrame) {
   gameFrame.src = `games/${currentGame}.html`;
 }
+
+// ===== Recently Played =====
+function addRecentlyPlayed(game) {
+  let recent = JSON.parse(localStorage.getItem("recentGames")) || [];
+
+  recent = recent.filter(g => g.name !== game.name);
+  recent.unshift(game);
+  recent = recent.slice(0, 6);
+
+  localStorage.setItem("recentGames", JSON.stringify(recent));
+}
+
+function loadRecentlyPlayed() {
+  const container = document.getElementById("recent-games");
+  if (!container) return;
+
+  const recent = JSON.parse(localStorage.getItem("recentGames")) || [];
+  recent.forEach(game => {
+    const card = createGameCard(game);
+    container.appendChild(card);
+  });
+}
+
