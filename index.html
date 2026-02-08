@@ -14,24 +14,48 @@
     </a>
   </header>
 
-  <!-- Ad banner placeholder -->
+  <!-- Top banner ad -->
   <div class="ad-banner">
-    <!-- Insert your AdSense code here -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3531802908860882"
      crossorigin="anonymous"></script>
   </div>
 
-  <!-- Game list / homepage grid -->
-  <main class="game-list">
-    <!-- Populated dynamically from games.json -->
-  </main>
+  <!-- HOT GAMES section -->
+  <section class="game-section">
+    <h2 class="section-title">🔥 HOT GAMES</h2>
+    <div class="game-list" id="hot-games">
+      <!-- Populated dynamically -->
+    </div>
+  </section>
+
+  <!-- ALL GAMES section -->
+  <section class="game-section">
+    <h2 class="section-title">🎮 ALL GAMES</h2>
+    <div class="game-list" id="all-games">
+      <!-- Populated dynamically -->
+    </div>
+  </section>
 
   <script>
-    // Dynamically populate homepage with games
     fetch("games.json")
       .then(res => res.json())
       .then(games => {
-        const container = document.querySelector(".game-list");
+        const hotContainer = document.getElementById("hot-games");
+        const allContainer = document.getElementById("all-games");
+
+        // HOT games - first 4
+        games.slice(0,4).forEach(game => {
+          const card = document.createElement("a");
+          card.href = `game.html?game=${game.file}`;
+          card.className = "game-card hot";
+          card.innerHTML = `
+            <img src="assets/${game.thumb}" alt="${game.name}">
+            <span>${game.name}</span>
+          `;
+          hotContainer.appendChild(card);
+        });
+
+        // ALL games
         games.forEach(game => {
           const card = document.createElement("a");
           card.href = `game.html?game=${game.file}`;
@@ -40,7 +64,7 @@
             <img src="assets/${game.thumb}" alt="${game.name}">
             <span>${game.name}</span>
           `;
-          container.appendChild(card);
+          allContainer.appendChild(card);
         });
       })
       .catch(err => console.error("Failed to load games.json:", err));
