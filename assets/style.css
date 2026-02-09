@@ -366,4 +366,24 @@ main {
   flex: 1;
 }
 
+/* Search inside left menu */
+.menu-search {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: 1px solid #1a2238;
+  background: #12182a;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.menu-search::placeholder {
+  color: #8888ff;
+}
+
+.menu-search:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+}
 
