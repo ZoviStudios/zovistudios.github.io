@@ -90,10 +90,29 @@ function loadRecentlyPlayed() {
 // ===== Load games.json =====
 let games = [];
 
-fetch(fixPath('games.json'))
+fetch(`${basePath}/games.json`)
   .then(res => res.json())
   .then(data => {
-    games = data;
+    games = data.map(g => ({
+      ...g,
+      category: g.category || autoCategorize(g.name)
+    }));
+
+    // Game counter
+    const counter = document.getElementById("game-count");
+    if (counter) counter.textContent = games.length;
+
+    // Render ALL stuff
+    showAll();         // default display
+    loadFavorites();
+    loadRecentlyPlayed();
+    setupSearch();
+    setupRandomButton();
+    loadSidebar();
+    loadGamePage();
+  })
+  .catch(err => console.error("Failed to load games.json:", err));
+
 
     // Game counter
     const counter = document.getElementById("game-count");
