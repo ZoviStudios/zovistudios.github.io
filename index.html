@@ -16,27 +16,40 @@
     <input type="text" id="search-input" placeholder="Search games..." class="search-bar">
   </div>
 
-  <main>
-    <!-- Hero Logo & Tagline -->
+  <main class="layout">
+  
+  <!-- Left Menu -->
+  <aside class="left-menu">
+    <h3>MENU</h3>
+    <button onclick="scrollToSection('hot-games')">🔥 Hot Games</button>
+    <button onclick="scrollToSection('recent-games')">🕘 Recently Played</button>
+    <button onclick="scrollToSection('favorite-games')">⭐ Favorites</button>
+    <button id="random-btn">🎲 Random Game</button>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="content">
+
     <div class="hero-logo-container">
       <img src="./assets/logo.png" class="hero-logo" alt="Zovi Games">
-      <h2 class="site-tagline">The BEST ONLINE Browser Games - Unblocked and Fun!</h2>
+      <h2 class="site-tagline">Play the hottest browser games in neon style!</h2>
     </div>
 
     <h3 class="section-title">RECENTLY PLAYED</h3>
     <div id="recent-games" class="game-list"></div>
 
+    <h3 class="section-title">🔥 HOT GAMES</h3>
+    <div id="hot-games" class="game-list"></div>
+
     <h3 class="section-title">⭐ FAVORITES</h3>
     <div id="favorite-games" class="game-list"></div>
 
-    <!-- Hot Games Section -->
-    <h3 class="section-title">HOT GAMES</h3>
-    <div id="hot-games" class="game-list"></div>
-
-    <!-- All Games Section -->
-    <h3 class="section-title">ALL GAMES</h3>
+    <h3 class="section-title">ALL GAMES (<span id="game-count"></span>)</h3>
     <div id="all-games" class="game-list"></div>
-  </main>
+
+  </div>
+</main>
+
 
 
   <!-- Footer -->
