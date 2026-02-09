@@ -21,9 +21,10 @@
   <!-- Left Menu -->
   <aside class="left-menu">
     <h3>MENU</h3>
-    <button onclick="scrollToSection('hot-games')">🔥 Hot Games</button>
-    <button onclick="scrollToSection('recent-games')">🕘 Recently Played</button>
-    <button onclick="scrollToSection('favorite-games')">⭐ Favorites</button>
+    <button onclick="showHot()">🔥 Hot Games</button>
+    <button onclick="showRecent()">🕘 Recently Played</button>
+    <button onclick="showFavorites()">⭐ Favorites</button>
+    <button onclick="showAll()">🎮 All Games</button>
     <button id="random-btn">🎲 Random Game</button>
   </aside>
 
@@ -35,20 +36,15 @@
       <h2 class="site-tagline">Play the hottest browser games in neon style!</h2>
     </div>
 
-    <h3 class="section-title">RECENTLY PLAYED</h3>
-    <div id="recent-games" class="game-list"></div>
+    <h3 class="section-title" id="section-title">
+      ALL GAMES (<span id="game-count"></span>)
+    </h3>
 
-    <h3 class="section-title">🔥 HOT GAMES</h3>
-    <div id="hot-games" class="game-list"></div>
-
-    <h3 class="section-title">⭐ FAVORITES</h3>
-    <div id="favorite-games" class="game-list"></div>
-
-    <h3 class="section-title">ALL GAMES (<span id="game-count"></span>)</h3>
-    <div id="all-games" class="game-list"></div>
+    <div id="game-display" class="game-list"></div>
 
   </div>
 </main>
+
 
 
 
