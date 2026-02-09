@@ -166,6 +166,7 @@ function loadSidebar() {
 // ===== Load games.json =====
 let games = [];
 fetch(`${basePath}/games.json`)
+
   .then(res => res.json())
   .then(data => {
     // Assign category if missing
