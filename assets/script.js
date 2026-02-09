@@ -145,22 +145,26 @@ function setupRandomButton() {
   };
 }
 
-// ===== Sidebar (game.html) =====
 function loadSidebar() {
   const list = document.getElementById("sidebar-list");
   if (!list) return;
 
+  list.innerHTML = "";
+
   games.slice(0, 8).forEach(game => {
     const li = document.createElement("li");
+
     li.innerHTML = `
-      <a href="game.html?game=${game.file}">
-        <img src="${fixPath(game.thumbnail)}">
+      <a href="/game.html?game=${game.file}">
+        <img src="${fixPath(game.thumbnail)}" alt="${game.name}">
         ${game.name}
       </a>
     `;
+
     list.appendChild(li);
   });
 }
+
 
 // ===== Game Page Loader =====
 function loadGamePage() {
