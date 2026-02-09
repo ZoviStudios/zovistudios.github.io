@@ -319,3 +319,51 @@ main {
   border-radius: 6px;
 }
 
+/* ===== Layout with Left Menu ===== */
+.layout {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Left vertical menu */
+.left-menu {
+  width: 220px;
+  background: #0f1426;
+  border-radius: 14px;
+  padding: 15px;
+  border: 1px solid #1a2238;
+  height: fit-content;
+  position: sticky;
+  top: 120px;
+}
+
+.left-menu h3 {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.left-menu button {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  background: #12182a;
+  border: 1px solid #1a2238;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.left-menu button:hover {
+  border-color: var(--accent-blue);
+  transform: translateX(4px);
+}
+
+/* Main content next to menu */
+.content {
+  flex: 1;
+}
+
+
