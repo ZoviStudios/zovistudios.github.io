@@ -1,64 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Free Online Games on ZoviGames - Play NOW!</title>
-  <link rel="stylesheet" href="assets/style.css">
-  <link rel="icon" type="image/png" href="./assets/favicon.png">
-  <script src="assets/script.js" defer></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Online Games on Zovi Games - Play NOW!</title>
+
+<!-- Favicon -->
+<link rel="icon" href="./assets/favicon.png" type="image/png">
+
+<!-- Style -->
+<link rel="stylesheet" href="./assets/style.css">
 </head>
 <body>
-  <!-- Top Navigation -->
-  <div class="top-nav">
-    <a href="index.html" class="logo-link">
-      <img src="./assets/logo.png" class="logo" alt="Zovi Games">
-    </a>
-  </div>
 
-  <main class="layout">
-  
+<!-- Top Navigation -->
+<header class="top-nav">
+  <a href="index.html" class="logo">
+    <img src="./assets/logo.png" alt="Zovi Games">
+  </a>
+</header>
+
+<!-- Main Layout -->
+<main class="layout">
+
   <!-- Left Menu -->
   <aside class="left-menu">
     <h3>MENU</h3>
-    <input 
-      type="text" 
-      id="search-input" 
-      class="menu-search" 
-      placeholder="Search games..."
-    >
+
+    <!-- Search -->
+    <input type="text" id="search-input" class="menu-search" placeholder="Search games...">
+
+    <!-- Core buttons -->
     <button onclick="showHot()">🔥 Hot Games</button>
     <button onclick="showRecent()">🕘 Recently Played</button>
     <button onclick="showFavorites()">⭐ Favorites</button>
+
+    <hr>
+
+    <!-- Categories -->
+    <button onclick="showCategory('Action')">💥 Action</button>
+    <button onclick="showCategory('Racing')">🏎️ Racing</button>
+    <button onclick="showCategory('Puzzle')">🧩 Puzzle</button>
+    <button onclick="showCategory('Shooting')">🔫 Shooting</button>
+    <button onclick="showCategory('Skill')">🎯 Skill</button>
+
+    <hr>
+
+    <!-- Other -->
     <button onclick="showAll()">🎮 All Games</button>
     <button id="random-btn">🎲 Random Game</button>
   </aside>
 
   <!-- Main Content -->
   <div class="content">
-
     <div class="hero-logo-container">
       <img src="./assets/logo.png" class="hero-logo" alt="Zovi Games">
       <h2 class="site-tagline">Play the hottest browser games in neon style!</h2>
     </div>
 
+    <!-- Section title -->
     <h3 class="section-title" id="section-title">
       ALL GAMES (<span id="game-count"></span>)
     </h3>
 
+    <!-- Game grid -->
     <div id="game-display" class="game-list"></div>
-
   </div>
 </main>
 
+<!-- Footer -->
+<footer class="footer">
+  <p>&copy; <span id="current-year"></span> Zovi Games | Contact: <a href="mailto:contact@zovi.games">contact@zovi.games</a></p>
+</footer>
 
-
-
-  <!-- Footer -->
-  <footer class="site-footer">
-    <div class="footer-content">
-      &copy; <span id="current-year">2026</span> Zovi Games. All rights reserved.
-      <a href="mailto:contact@zovigames.com">Contact</a>
-    </div>
-  </footer>
+<!-- Script -->
+<script src="./assets/script.js"></script>
 </body>
 </html>
