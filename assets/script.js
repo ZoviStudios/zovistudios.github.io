@@ -11,7 +11,7 @@ function fixPath(path) {
   return `${basePath}/${path}`;
 }
 
-// ===== Auto Category AI =====
+// ===== Auto Category AI (optional for later) =====
 function autoCategorize(gameName) {
   const name = gameName.toLowerCase();
   if (name.includes("race") || name.includes("car") || name.includes("drive"))
@@ -24,7 +24,7 @@ function autoCategorize(gameName) {
     return "Skill";
   if (name.includes("fight") || name.includes("battle") || name.includes("stickman"))
     return "Action";
-  return "Action"; // default
+  return "Action";
 }
 
 // ===== Create Game Card =====
@@ -37,14 +37,6 @@ function createGameCard(game) {
     <img src="${fixPath(game.thumbnail)}" alt="${game.name}">
     <span>${game.name}</span>
   `;
-
-  // NEW badge
-  if (game.new) {
-    const badge = document.createElement("div");
-    badge.className = "new-badge";
-    badge.textContent = "NEW";
-    card.appendChild(badge);
-  }
 
   // Favorite star
   const star = document.createElement("div");
@@ -96,7 +88,7 @@ function loadRecentlyPlayed() {
   recent.forEach(game => container.appendChild(createGameCard(game)));
 }
 
-// ===== Dynamic Display System =====
+// ===== Display system =====
 const display = document.getElementById("game-display");
 const title = document.getElementById("section-title");
 
@@ -107,6 +99,7 @@ function renderGames(list) {
 }
 
 function showAll() {
+  if (!title) return;
   title.innerHTML = `ALL GAMES (<span id="game-count">${games.length}</span>)`;
   renderGames(games);
 }
@@ -129,17 +122,10 @@ function showFavorites() {
   renderGames(favs);
 }
 
-function showCategory(category) {
-  const filtered = games.filter(g => g.category === category);
-  title.textContent = `🎮 ${category.toUpperCase()} GAMES`;
-  renderGames(filtered);
-}
-
 // ===== Search =====
 function setupSearch() {
   const input = document.getElementById("search-input");
   if (!input) return;
-
   input.addEventListener("input", () => {
     const query = input.value.toLowerCase();
     const cards = display.querySelectorAll(".game-card");
@@ -150,7 +136,7 @@ function setupSearch() {
   });
 }
 
-// ===== Random Game =====
+// ===== Random game =====
 function setupRandomButton() {
   const btn = document.getElementById("random-btn");
   if (!btn) return;
@@ -177,45 +163,27 @@ function loadSidebar() {
   });
 }
 
-// ===== Game Page Loader =====
-function loadGamePage() {
-  const frame = document.getElementById("game-frame");
-  if (!frame) return;
-  const params = new URLSearchParams(window.location.search);
-  const gameFile = params.get("game");
-  const gameData = games.find(g => g.file === gameFile);
-  if (!gameData) return;
-  frame.src = fixPath(`games/${gameData.file}.html`);
-  addRecentlyPlayed(gameData);
-}
-
-// ===== Scroll to section =====
-function scrollToSection(id) {
-  const el = document.getElementById(id);
-  if (el) el.scrollIntoView({ behavior: "smooth" });
-}
-
 // ===== Load games.json =====
 let games = [];
 fetch(`${basePath}/games.json`)
   .then(res => res.json())
   .then(data => {
+    // Assign category if missing
     games = data.map(g => ({
       ...g,
       category: g.category || autoCategorize(g.name)
     }));
 
-    // Render default
+    // Render default view
     showAll();
     loadFavorites();
     loadRecentlyPlayed();
     setupSearch();
     setupRandomButton();
     loadSidebar();
-    loadGamePage();
   })
   .catch(err => console.error("Failed to load games.json:", err));
 
-// ===== Auto year update =====
+// ===== Auto year in footer =====
 const yearSpan = document.getElementById("current-year");
 if (yearSpan) yearSpan.textContent = new Date().getFullYear();
