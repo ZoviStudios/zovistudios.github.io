@@ -11,7 +11,7 @@ function fixPath(path) {
   return `${basePath}/${path}`;
 }
 
-// ===== Auto Category AI (optional for later) =====
+// ===== Auto Category AI =====
 function autoCategorize(gameName) {
   const name = gameName.toLowerCase();
   if (name.includes("race") || name.includes("car") || name.includes("drive"))
@@ -166,10 +166,8 @@ function loadSidebar() {
 // ===== Load games.json =====
 let games = [];
 fetch(fixPath('games.json'))
-
   .then(res => res.json())
   .then(data => {
-    // Assign category if missing
     games = data.map(g => ({
       ...g,
       category: g.category || autoCategorize(g.name)
