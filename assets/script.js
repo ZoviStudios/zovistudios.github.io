@@ -1,11 +1,17 @@
-// ===== Global helpers =====
+// ===== Fix paths so they always load from root =====
+function fixPath(path) {
+  if (!path) return "";
+  return path.startsWith("/") ? path : "/" + path;
+}
+
+// ===== Create Game Card =====
 function createGameCard(game) {
   const card = document.createElement("a");
   card.className = "game-card";
   card.href = `game.html?game=${game.file}`;
 
   card.innerHTML = `
-    <img src="${game.thumbnail}" alt="${game.name}">
+    <img src="${fixPath(game.thumbnail)}" alt="${game.name}">
     <span>${game.name}</span>
   `;
 
@@ -76,7 +82,7 @@ function loadRecentlyPlayed() {
 // ===== Load games.json =====
 let games = [];
 
-fetch('games.json')
+fetch('/games.json')
   .then(res => res.json())
   .then(data => {
     games = data;
@@ -85,7 +91,7 @@ fetch('games.json')
     const counter = document.getElementById("game-count");
     if (counter) counter.textContent = games.length;
 
-    // HOT & ALL games (index.html)
+    // HOT & ALL games
     const hotContainer = document.getElementById("hot-games");
     const allContainer = document.getElementById("all-games");
 
@@ -138,7 +144,7 @@ function setupRandomButton() {
   };
 }
 
-// ===== Sidebar for game.html =====
+// ===== Sidebar (game.html) =====
 function loadSidebar() {
   const list = document.getElementById("sidebar-list");
   if (!list) return;
@@ -147,7 +153,7 @@ function loadSidebar() {
     const li = document.createElement("li");
     li.innerHTML = `
       <a href="game.html?game=${game.file}">
-        <img src="${game.thumbnail}">
+        <img src="${fixPath(game.thumbnail)}">
         ${game.name}
       </a>
     `;
@@ -166,7 +172,7 @@ function loadGamePage() {
   const gameData = games.find(g => g.file === gameFile);
   if (!gameData) return;
 
-  frame.src = gameData.path;
+  frame.src = fixPath(gameData.path);
 
   // Add to recently played
   addRecentlyPlayed(gameData);
