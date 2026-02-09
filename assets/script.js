@@ -90,7 +90,7 @@ function loadRecentlyPlayed() {
 // ===== Load games.json =====
 let games = [];
 
-fetch('/games.json')
+fetch(fixPath('games.json'))
   .then(res => res.json())
   .then(data => {
     games = data;
