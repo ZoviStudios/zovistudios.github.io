@@ -14,13 +14,13 @@
   {
     "name": "Geometry Dash",
     "file": "geometry-dash",
-    "thumbnail": "assets/geometry-dash.png",
+    "thumbnail": "assets/geometry-dash-thumb.png",
     "hot": true
   },
   {
     "name": "Five Nights at Freddy's",
     "file": "fnaf1",
-    "thumbnail": "assets/fnaf1.png",
+    "thumbnail": "assets/fnaf1-thumb.png",
     "hot": false
   }
 ]
