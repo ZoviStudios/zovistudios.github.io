@@ -113,6 +113,7 @@ fetch('/games.json')
     setupRandomButton();
     loadSidebar();
     loadGamePage();
+    showAll();
   });
 
 // ===== Search =====
@@ -191,3 +192,37 @@ function scrollToSection(id) {
     el.scrollIntoView({ behavior: "smooth" });
   }
 }
+
+// ===== Dynamic Display System =====
+const display = document.getElementById("game-display");
+const title = document.getElementById("section-title");
+
+function renderGames(list) {
+  if (!display) return;
+  display.innerHTML = "";
+  list.forEach(game => display.appendChild(createGameCard(game)));
+}
+
+function showAll() {
+  title.innerHTML = `ALL GAMES (<span id="game-count">${games.length}</span>)`;
+  renderGames(games);
+}
+
+function showHot() {
+  const hot = games.filter(g => g.hot);
+  title.textContent = "🔥 HOT GAMES";
+  renderGames(hot);
+}
+
+function showRecent() {
+  const recent = JSON.parse(localStorage.getItem("recentGames")) || [];
+  title.textContent = "🕘 RECENTLY PLAYED";
+  renderGames(recent);
+}
+
+function showFavorites() {
+  const favs = JSON.parse(localStorage.getItem("favorites")) || [];
+  title.textContent = "⭐ FAVORITES";
+  renderGames(favs);
+}
+
