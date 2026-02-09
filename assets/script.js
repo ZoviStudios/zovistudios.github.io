@@ -31,7 +31,8 @@ function autoCategorize(gameName) {
 function createGameCard(game) {
   const card = document.createElement("a");
   card.className = "game-card";
-  card.href = fixPath(`games/${game.file}.html`);
+  card.href = fixPath(`game.html?game=${game.file}`);
+
 
   card.innerHTML = `
     <img src="${fixPath(game.thumbnail)}" alt="${game.name}">
