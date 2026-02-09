@@ -91,5 +91,15 @@
     };
   </script>
 
+  <script>
+  const params = new URLSearchParams(window.location.search);
+  const game = params.get("game");
+  
+  if (game) {
+    document.getElementById("game-frame").src = `games/${game}.html`;
+  }
+  </script>
+
+  
 </body>
 </html>
