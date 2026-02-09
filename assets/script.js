@@ -1,8 +1,16 @@
-// ===== Fix paths so they always load from root =====
+// ===== Correct path for GitHub Pages repo =====
+const basePath = window.location.pathname.split('/')[1]
+  ? '/' + window.location.pathname.split('/')[1]
+  : '';
+
 function fixPath(path) {
   if (!path) return "";
-  return path.startsWith("/") ? path : "/" + path;
+  if (path.startsWith("http")) return path;
+
+  path = path.replace(/^\/+/, ''); // remove leading slash
+  return `${basePath}/${path}`;
 }
+
 
 // ===== Create Game Card =====
 function createGameCard(game) {
