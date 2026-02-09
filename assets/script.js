@@ -165,7 +165,8 @@ function loadSidebar() {
 
 // ===== Load games.json =====
 let games = [];
-fetch(fixPath('games.json'))
+fetch('games.json')
+
   .then(res => res.json())
   .then(data => {
     games = data.map(g => ({
