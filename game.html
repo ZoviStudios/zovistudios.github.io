@@ -68,5 +68,35 @@ function goFullscreen() {
 }
 </script>
 
+<script>
+function scaleGame() {
+  const iframe = document.getElementById("game-frame");
+
+  iframe.onload = () => {
+    const doc = iframe.contentWindow.document;
+
+    const style = doc.createElement("style");
+    style.innerHTML = `
+      html, body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: black;
+      }
+
+      body > * {
+        transform: scale(calc(min(100vw / 480, 100vh / 640)));
+        transform-origin: top left;
+      }
+    `;
+
+    doc.head.appendChild(style);
+  };
+}
+
+scaleGame();
+</script>
+
+  
 </body>
 </html>
