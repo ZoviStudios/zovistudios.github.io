@@ -229,13 +229,26 @@ body {
   flex: 1;
 }
 
-.game-frame {
+.game-frame-wrapper {
   width: 100%;
   height: 70vh;
-  border: none;
+  overflow: hidden;
+  position: relative;
+  background: black;
   border-radius: 12px;
-  background: #000;
 }
+
+.game-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 480px;     /* Unity game native width */
+  height: 640px;    /* Unity game native height */
+
+  transform-origin: top left;
+}
+
 
 .player-controls {
   margin-top: 10px;
