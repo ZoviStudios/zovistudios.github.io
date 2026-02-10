@@ -22,5 +22,11 @@
     "file": "fnaf1",
     "thumbnail": "assets/fnaf1-thumb.png",
     "hot": false
+  },
+  {
+    "name": "Crossy Road",
+    "file": "crossy-road",
+    "thumbnail": "assets/crossy-road-thumb.png",
+    "hot": false
   }
 ]
