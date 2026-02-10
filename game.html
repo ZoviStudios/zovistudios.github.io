@@ -100,6 +100,25 @@ function scaleGame() {
 scaleGame();
 </script>
 
-  
+<script>
+function scaleUnityGame() {
+  const iframe = document.getElementById("game-frame");
+  const wrapper = document.querySelector(".game-frame-wrapper");
+
+  function resize() {
+    const scaleX = wrapper.clientWidth / 480;
+    const scaleY = wrapper.clientHeight / 640;
+    const scale = Math.min(scaleX, scaleY);
+
+    iframe.style.transform = `scale(${scale})`;
+  }
+
+  window.addEventListener("resize", resize);
+  resize();
+}
+
+scaleUnityGame();
+</script>
+
 </body>
 </html>
