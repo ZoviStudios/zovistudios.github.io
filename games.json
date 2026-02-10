@@ -3,7 +3,7 @@
     "name": "Slope",
     "file": "slope",
     "thumbnail": "assets/slope-thumb.png",
-    "hot": false
+    "hot": true
   },
   {
     "name": "Space Waves",
@@ -27,6 +27,12 @@
     "name": "Crossy Road",
     "file": "crossy-road",
     "thumbnail": "assets/crossy-road-thumb.png",
+    "hot": false
+  },
+  {
+    "name": "Bloons TD 5",
+    "file": "bloons",
+    "thumbnail": "assets/bloons-thumb.png",
     "hot": false
   }
 ]
