@@ -286,3 +286,20 @@ body {
   object-fit: cover;
   display: block;
 }
+
+.sidebar-game {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.sidebar-game img {
+  width: 60px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
