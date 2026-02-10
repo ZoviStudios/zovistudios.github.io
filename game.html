@@ -1,105 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Play Game - Zovi Games</title>
-  <link rel="stylesheet" href="assets/style.css">
-  <link rel="icon" type="image/png" href="./assets/favicon.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zovi Games</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="assets/favicon.png">
 </head>
-
 <body>
 
-  <!-- Top Navigation -->
-  <div class="top-nav">
-    <a href="index.html" class="logo-link">
-      <img src="assets/logo.png" class="logo">
-    </a>
+<!-- Top bar (small, clean) -->
+<header class="game-topbar">
+  <a href="index.html" class="game-logo">
+    <img src="assets/logo.png" alt="Zovi Games">
+  </a>
+  <h2 id="game-name"></h2>
+</header>
+
+<!-- Main game layout -->
+<main class="game-layout">
+
+  <!-- Game player -->
+  <div class="game-player-container">
+    <iframe id="game-frame" class="game-frame"></iframe>
+
+    <div class="player-controls">
+      <button onclick="goFullscreen()">⛶ Fullscreen</button>
+    </div>
   </div>
 
-  <main>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h3>More Games</h3>
+    <ul id="sidebar-list"></ul>
+  </aside>
 
-    <div class="game-page">
+</main>
 
-      <!-- Left: Game -->
-      <div class="game-container">
-        <iframe id="game-frame"></iframe>
+<footer class="footer">
+  &copy; <span id="current-year"></span> Zovi Games
+</footer>
 
-        <div class="game-controls">
-          <button id="fullscreen-btn">Fullscreen</button>
-        </div>
-      </div>
+<script src="assets/script.js"></script>
 
-      <!-- Right: Sidebar -->
-      <div class="sidebar">
-        <h3>More Games</h3>
-        <ul id="sidebar-list"></ul>
+<script>
+// Load correct game + title
+const params = new URLSearchParams(window.location.search);
+const gameFile = params.get("game");
 
-        <div class="sidebar-ad">
-          <!-- Paste AdSense ad here if you want -->
-        </div>
-      </div>
+if (gameFile) {
+  fetch("games.json")
+    .then(res => res.json())
+    .then(games => {
+      const game = games.find(g => g.file === gameFile);
+      if (game) {
+        document.getElementById("game-frame").src = `games/${game.file}.html`;
+        document.title = `${game.name} 🕹️ Play Now at Zovi Games`;
+        document.getElementById("game-name").textContent = game.name;
+      }
+    });
+}
 
-    </div>
+// Fullscreen
+function goFullscreen() {
+  const iframe = document.getElementById("game-frame");
+  if (iframe.requestFullscreen) iframe.requestFullscreen();
+}
+</script>
 
-  </main>
-
-  <!-- Footer -->
-  <footer class="site-footer">
-    <div class="footer-content">
-      <p>© 2026 Zovi Games. All rights reserved.</p>
-      <p>
-        Contact:
-        <a href="mailto:thearam@protonmail.com">thearam@protonmail.com</a>
-      </p>
-    </div>
-  </footer>
-
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const currentGame = params.get("game");
-
-    const frame = document.getElementById("game-frame");
-    frame.src = `games/${currentGame}.html`;
-
-    // Load sidebar icons
-    fetch("games.json")
-      .then(res => res.json())
-      .then(games => {
-        const sidebar = document.getElementById("sidebar-list");
-        games.forEach(game => {
-          if (game.file !== currentGame) {
-            const li = document.createElement("li");
-            li.innerHTML = `
-              <a href="game.html?game=${game.file}">
-                <img src="assets/${game.thumb}">
-                <span>${game.name}</span>
-              </a>
-            `;
-            sidebar.appendChild(li);
-          }
-
-          addRecentlyPlayed(gameData);
-    
-        });
-      });
-
-
-
-    // Fullscreen
-    document.getElementById("fullscreen-btn").onclick = () => {
-      if (frame.requestFullscreen) frame.requestFullscreen();
-    };
-  </script>
-
-  <script>
-  const params = new URLSearchParams(window.location.search);
-  const game = params.get("game");
-  
-  if (game) {
-    document.getElementById("game-frame").src = `games/${game}.html`;
-  }
-  </script>
-
-  
 </body>
 </html>
