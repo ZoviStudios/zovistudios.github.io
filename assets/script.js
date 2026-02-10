@@ -191,3 +191,20 @@ fetch('games.json')
 // ===== Auto year in footer =====
 const yearSpan = document.getElementById("current-year");
 if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+
+// Load thumbnails fix
+
+function loadThumbnails() {
+  document.querySelectorAll("img[data-src]").forEach(img => {
+    const realSrc = img.getAttribute("data-src");
+    const testImg = new Image();
+    testImg.onload = () => {
+      img.src = realSrc;
+    };
+    testImg.onerror = () => {
+      img.src = "assets/fallback.png"; // optional placeholder
+    };
+    testImg.src = realSrc;
+  });
+}
+
