@@ -100,24 +100,31 @@ scaleGame();
 </script>
 
 <script>
-function scaleUnityGame() {
+function applyUnityFix() {
   const iframe = document.getElementById("game-frame");
-  const wrapper = document.querySelector(".game-frame-wrapper");
 
-  function resize() {
-    const scaleX = wrapper.clientWidth / 480;
-    const scaleY = wrapper.clientHeight / 640;
-    const scale = Math.min(scaleX, scaleY);
+  iframe.onload = () => {
+    try {
+      const body = iframe.contentDocument.body;
 
-    iframe.style.transform = `scale(${scale})`;
-  }
+      const unityCanvas = body.querySelector("canvas");
+      if (!unityCanvas) return;
 
-  window.addEventListener("resize", resize);
-  resize();
+      // If canvas is small → it's a Unity game
+      if (unityCanvas.width <= 500 && unityCanvas.height <= 700) {
+        unityCanvas.style.width = "100%";
+        unityCanvas.style.height = "100%";
+        unityCanvas.style.objectFit = "contain";
+      }
+    } catch (e) {
+      // ignore cross-origin issues
+    }
+  };
 }
 
-scaleUnityGame();
+applyUnityFix();
 </script>
+
 
 </body>
 </html>
