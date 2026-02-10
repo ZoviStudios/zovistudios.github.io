@@ -144,7 +144,7 @@ function setupRandomButton() {
   if (!btn) return;
   btn.onclick = () => {
     const random = games[Math.floor(Math.random() * games.length)];
-    window.location.href = fixPath(`games/${random.file}.html`);
+    window.location.href = `/game.html?game=`
   };
 }
 
