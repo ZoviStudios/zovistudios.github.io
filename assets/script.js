@@ -36,9 +36,11 @@ function createGameCard(game) {
 
 
   card.innerHTML = `
-    <img src="${fixPath(game.thumbnail)}" alt="${game.name}">
-    <span>${game.name}</span>
-  `;
+  <div class="thumb-wrap">
+    <img data-src="${fixPath(game.thumbnail)}" alt="${game.name}">
+  </div>
+  <span>${game.name}</span>
+`;
 
   // Favorite star
   const star = document.createElement("div");
