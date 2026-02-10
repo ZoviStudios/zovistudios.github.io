@@ -106,24 +106,29 @@ function showAll() {
   if (!title) return;
   title.innerHTML = `ALL GAMES (<span id="game-count">${games.length}</span>)`;
   renderGames(games);
+  loadThumbnails();
+
 }
 
 function showHot() {
   const hot = games.filter(g => g.hot);
   title.textContent = "🔥 HOT GAMES";
   renderGames(hot);
+  loadThumbnails();
 }
 
 function showRecent() {
   const recent = JSON.parse(localStorage.getItem("recentGames")) || [];
   title.textContent = "🕘 RECENTLY PLAYED";
   renderGames(recent);
+  loadThumbnails();
 }
 
 function showFavorites() {
   const favs = JSON.parse(localStorage.getItem("favorites")) || [];
   title.textContent = "⭐ FAVORITES";
   renderGames(favs);
+  loadThumbnails();
 }
 
 // ===== Search =====
