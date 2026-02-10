@@ -159,18 +159,23 @@ function setupRandomButton() {
 function loadSidebar() {
   const list = document.getElementById("sidebar-list");
   if (!list) return;
+
   list.innerHTML = "";
+
   games.slice(0, 8).forEach(game => {
     const li = document.createElement("li");
+
     li.innerHTML = `
-      <a href="${fixPath(`games/${game.file}.html`)}">
-        <img src="${fixPath(game.thumbnail)}" alt="${game.name}">
-        ${game.name}
+      <a class="sidebar-game" href="/game.html?game=${game.file}">
+        <img src="${game.thumbnail}" alt="${game.name}">
+        <span>${game.name}</span>
       </a>
     `;
+
     list.appendChild(li);
   });
 }
+
 
 // ===== Load games.json =====
 let games = [];
