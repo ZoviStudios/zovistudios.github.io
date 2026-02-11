@@ -63,8 +63,20 @@
 <!-- Login -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { 
+  getAuth, 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+import { 
+  getFirestore, 
+  doc, 
+  setDoc, 
+  getDoc 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCJRyyojM9gC4_YX-alWG_NPqIXFp4LgR8",
@@ -79,44 +91,42 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+window.register = async function () {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const username = document.getElementById("username").value;
+
+  const userCred = await createUserWithEmailAndPassword(auth, email, password);
+
+  await setDoc(doc(db, "users", userCred.user.uid), {
+    username: username,
+    email: email
+  });
+};
+
 window.login = async function () {
-  const provider = new GoogleAuthProvider();
-  await signInWithPopup(auth, provider);
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  await signInWithEmailAndPassword(auth, email, password);
 };
 
 window.logout = async function () {
   await signOut(auth);
 };
 
-onAuthStateChanged(auth, user => {
-  const btn = document.getElementById("login-btn");
-  if (!btn) return;
+onAuthStateChanged(auth, async (user) => {
+  const status = document.getElementById("auth-status");
+  if (!status) return;
 
   if (user) {
-    btn.textContent = "Logout";
-    btn.onclick = logout;
-    window.currentUser = user;
+    const snap = await getDoc(doc(db, "users", user.uid));
+    const data = snap.data();
+    status.textContent = `Logged in as ${data.username}`;
   } else {
-    btn.textContent = "Login with Google";
-    btn.onclick = login;
-    window.currentUser = null;
+    status.textContent = "Not logged in";
   }
 });
-
-window.saveFavorite = async function (game) {
-  if (!window.currentUser) return;
-
-  await setDoc(doc(db, "favorites", window.currentUser.uid), {
-    [game]: true
-  }, { merge: true });
-};
-
-window.getFavorites = async function () {
-  if (!window.currentUser) return {};
-
-  const snap = await getDoc(doc(db, "favorites", window.currentUser.uid));
-  return snap.exists() ? snap.data() : {};
-};
 </script>
 
   
