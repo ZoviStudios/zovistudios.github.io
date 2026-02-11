@@ -27,12 +27,12 @@
     "name": "Crossy Road",
     "file": "crossy-road",
     "thumbnail": "assets/crossy-road-thumb.png",
-    "hot": false
+    "hot": true
   },
   {
     "name": "Drive Mad",
     "file": "drive-mad",
-    "thumbnail": "assets/drive-mad.png",
+    "thumbnail": "assets/drive-mad-thumb.png",
     "hot": false
   }
 ]
