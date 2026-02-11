@@ -1,220 +1,63 @@
-// ===== Base Path for GitHub Pages =====
-const basePath = window.location.pathname.split('/')[1]
-  ? '/' + window.location.pathname.split('/')[1]
-  : '';
+// ==============================
+// Script.js - Zovi Games
+// ==============================
 
-// ===== Fix paths for images and game links =====
-function fixPath(path) {
-  if (!path) return "";
-  if (path.startsWith("http")) return path;
-  path = path.replace(/^\/+/, '');
-  return `${basePath}/${path}`;
-}
+const container = document.getElementById("games-container");
 
-// ===== Auto Category AI =====
-function autoCategorize(gameName) {
-  const name = gameName.toLowerCase();
-  if (name.includes("race") || name.includes("car") || name.includes("drive"))
-    return "Racing";
-  if (name.includes("shoot") || name.includes("gun") || name.includes("war") || name.includes("sniper"))
-    return "Shooting";
-  if (name.includes("puzzle") || name.includes("2048") || name.includes("match") || name.includes("block"))
-    return "Puzzle";
-  if (name.includes("jump") || name.includes("run") || name.includes("slope") || name.includes("parkour"))
-    return "Skill";
-  if (name.includes("fight") || name.includes("battle") || name.includes("stickman"))
-    return "Action";
-  return "Action";
-}
-
-// ===== Create Game Card =====
-function createGameCard(game) {
-  const card = document.createElement("a");
-  card.className = "game-card";
-  card.href = `/game.html?game=${game.file}`;
-
-
-
-  card.innerHTML = `
-  <div class="thumb-wrap">
-    <img data-src="${fixPath(game.thumbnail)}" alt="${game.name}">
-  </div>
-  <span>${game.name}</span>
-`;
-
-  // Favorite star
-  const star = document.createElement("div");
-  star.className = "fav-star";
-  star.textContent = "⭐";
-  star.onclick = (e) => {
-    e.preventDefault();
-    toggleFavorite(game);
-  };
-  card.appendChild(star);
-
-  return card;
-}
-
-// ===== Favorites =====
-function toggleFavorite(game) {
-  let favs = JSON.parse(localStorage.getItem("favorites")) || [];
-  if (favs.find(g => g.file === game.file)) {
-    favs = favs.filter(g => g.file !== game.file);
-  } else {
-    favs.push(game);
-  }
-  localStorage.setItem("favorites", JSON.stringify(favs));
-  showFavorites();
-}
-
-function loadFavorites() {
-  const container = document.getElementById("favorite-games");
-  if (!container) return;
-  container.innerHTML = "";
-  const favs = JSON.parse(localStorage.getItem("favorites")) || [];
-  favs.forEach(game => container.appendChild(createGameCard(game)));
-}
-
-// ===== Recently Played =====
-function addRecentlyPlayed(game) {
-  let recent = JSON.parse(localStorage.getItem("recentGames")) || [];
-  recent = recent.filter(g => g.file !== game.file);
-  recent.unshift(game);
-  recent = recent.slice(0, 6);
-  localStorage.setItem("recentGames", JSON.stringify(recent));
-}
-
-function loadRecentlyPlayed() {
-  const container = document.getElementById("recent-games");
-  if (!container) return;
-  container.innerHTML = "";
-  const recent = JSON.parse(localStorage.getItem("recentGames")) || [];
-  recent.forEach(game => container.appendChild(createGameCard(game)));
-}
-
-// ===== Display system =====
-const display = document.getElementById("game-display");
-const title = document.getElementById("section-title");
-
-function renderGames(list) {
-  if (!display) return;
-  display.innerHTML = "";
-  list.forEach(game => display.appendChild(createGameCard(game)));
-}
-
-function showAll() {
-  if (!title) return;
-  title.innerHTML = `ALL GAMES (<span id="game-count">${games.length}</span>)`;
-  renderGames(games);
-  loadThumbnails();
-
-}
-
-function showHot() {
-  const hot = games.filter(g => g.hot);
-  title.textContent = "🔥 HOT GAMES";
-  renderGames(hot);
-  loadThumbnails();
-}
-
-function showRecent() {
-  const recent = JSON.parse(localStorage.getItem("recentGames")) || [];
-  title.textContent = "🕘 RECENTLY PLAYED";
-  renderGames(recent);
-  loadThumbnails();
-}
-
-function showFavorites() {
-  const favs = JSON.parse(localStorage.getItem("favorites")) || [];
-  title.textContent = "⭐ FAVORITES";
-  renderGames(favs);
-  loadThumbnails();
-}
-
-// ===== Search =====
-function setupSearch() {
-  const input = document.getElementById("search-input");
-  if (!input) return;
-  input.addEventListener("input", () => {
-    const query = input.value.toLowerCase();
-    const cards = display.querySelectorAll(".game-card");
-    cards.forEach(card => {
-      const name = card.innerText.toLowerCase();
-      card.style.display = name.includes(query) ? "flex" : "none";
-    });
-  });
-}
-
-// ===== Random game =====
-function setupRandomButton() {
-  const btn = document.getElementById("random-btn");
-  if (!btn) return;
-  btn.onclick = () => {
-    const random = games[Math.floor(Math.random() * games.length)];
-    window.location.href = `/game.html?game=`
-  };
-}
-
-// ===== Sidebar for game.html =====
-function loadSidebar() {
-  const list = document.getElementById("sidebar-list");
-  if (!list) return;
-
-  list.innerHTML = "";
-
-  games.slice(0, 8).forEach(game => {
-    const li = document.createElement("li");
-
-    li.innerHTML = `
-      <a class="sidebar-game" href="/game.html?game=${game.file}">
-        <img src="${game.thumbnail}" alt="${game.name}">
-        <span>${game.name}</span>
-      </a>
-    `;
-
-    list.appendChild(li);
-  });
-}
-
-
-// ===== Load games.json =====
-let games = [];
-fetch('games.json')
-
-  .then(res => res.json())
-  .then(data => {
-    games = data.map(g => ({
-      ...g,
-      category: g.category || autoCategorize(g.name)
-    }));
-
-    // Render default view
-    showAll();
-    loadFavorites();
-    loadRecentlyPlayed();
-    setupSearch();
-    setupRandomButton();
-    loadSidebar();
+// Load games.json
+fetch("./games.json")
+  .then(res => {
+    if (!res.ok) throw new Error(`Failed to load games.json: ${res.status}`);
+    return res.json();
   })
-  .catch(err => console.error("Failed to load games.json:", err));
+  .then(games => {
+    games.forEach(game => {
+      const card = document.createElement("div");
+      card.className = "game-card";
 
-// ===== Auto year in footer =====
-const yearSpan = document.getElementById("current-year");
-if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+      // Inner HTML of each card
+      card.innerHTML = `
+        <img src="${game.thumbnail}" alt="${game.title}">
+        <h3>${game.title}</h3>
+        <div class="card-actions">
+          <a href="game.html?game=${encodeURIComponent(game.file)}" class="play-btn">Play</a>
+          <button class="fav-btn">❤</button>
+        </div>
+      `;
 
-// Load thumbnails fix
+      container.appendChild(card);
 
-function loadThumbnails() {
-  document.querySelectorAll("img[data-src]").forEach(img => {
-    const realSrc = img.getAttribute("data-src");
-    const testImg = new Image();
-    testImg.onload = () => {
-      img.src = realSrc;
-    };
-    testImg.onerror = () => {
-      img.src = "assets/fallback.png"; // optional placeholder
-    };
-    testImg.src = realSrc;
+      // Favorite button click
+      const favBtn = card.querySelector(".fav-btn");
+      favBtn.onclick = async () => {
+        if (!window.currentUser) {
+          alert("Login to save favorites!");
+          return;
+        }
+
+        try {
+          await window.saveFavorite(game.file);
+          favBtn.textContent = "❤️"; // Mark as saved
+        } catch (err) {
+          console.error(err);
+        }
+      };
+    });
+  })
+  .catch(err => console.error(err));
+
+// ==============================
+// Optional: show favorites when user logs in
+// ==============================
+onAuthStateChanged(auth, async user => {
+  if (!user) return;
+  const favData = await window.getFavorites();
+  
+  document.querySelectorAll(".game-card").forEach(card => {
+    const playLink = card.querySelector(".play-btn").href;
+    const fileName = decodeURIComponent(playLink.split("?game=")[1]);
+    if (favData[fileName]) {
+      card.querySelector(".fav-btn").textContent = "❤️";
+    }
   });
-}
-
+});
