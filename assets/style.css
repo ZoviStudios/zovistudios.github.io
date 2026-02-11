@@ -305,3 +305,27 @@ body {
   border-radius: 6px;
 }
 
+.top-nav {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.logo img {
+  height: 48px;
+}
+
+.login-btn {
+  margin-left: auto;
+  padding: 8px 14px;
+  background: #1a2238;
+  border: 1px solid #2b3558;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.login-btn:hover {
+  background: #222c4a;
+}
