@@ -15,7 +15,16 @@
     <img src="assets/logo.png" alt="Zovi Games">
   </a>
   <h2 id="game-name"></h2>
-  <button id="login-btn">Login with Google</button>
+  <div class="auth-box">
+  <input type="text" id="username" placeholder="Username">
+  <input type="email" id="email" placeholder="Email">
+  <input type="password" id="password" placeholder="Password">
+  <button onclick="register()">Register</button>
+  <button onclick="login()">Login</button>
+  <button onclick="logout()">Logout</button>
+  <span id="auth-status"></span>
+</div>
+
 </header>
 
 <!-- Main game layout -->
