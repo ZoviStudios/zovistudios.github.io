@@ -56,5 +56,66 @@
 
 <!-- Script -->
 <script src="./assets/script.js"></script>
+
+<!-- Login -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCJRyyojM9gC4_YX-alWG_NPqIXFp4LgR8",
+  authDomain: "zovi-games.firebaseapp.com",
+  projectId: "zovi-games",
+  storageBucket: "zovi-games.firebasestorage.app",
+  messagingSenderId: "398543626097",
+  appId: "1:398543626097:web:aebb817c396ed2962460d0"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+window.login = async function () {
+  const provider = new GoogleAuthProvider();
+  await signInWithPopup(auth, provider);
+};
+
+window.logout = async function () {
+  await signOut(auth);
+};
+
+onAuthStateChanged(auth, user => {
+  const btn = document.getElementById("login-btn");
+  if (!btn) return;
+
+  if (user) {
+    btn.textContent = "Logout";
+    btn.onclick = logout;
+    window.currentUser = user;
+  } else {
+    btn.textContent = "Login with Google";
+    btn.onclick = login;
+    window.currentUser = null;
+  }
+});
+
+window.saveFavorite = async function (game) {
+  if (!window.currentUser) return;
+
+  await setDoc(doc(db, "favorites", window.currentUser.uid), {
+    [game]: true
+  }, { merge: true });
+};
+
+window.getFavorites = async function () {
+  if (!window.currentUser) return {};
+
+  const snap = await getDoc(doc(db, "favorites", window.currentUser.uid));
+  return snap.exists() ? snap.data() : {};
+};
+</script>
+
+  
 </body>
 </html>
