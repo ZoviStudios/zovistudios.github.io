@@ -1,356 +1,142 @@
-/* ===== VARIABLES ===== */
-:root {
-  --accent-blue: #6677ff;
-  --background: #0f1426;
-  --card-bg: #12182a;
-  --text-color: #ffffff;
-  --secondary-color: #8888ff;
-}
-
-/* ===== BODY ===== */
-body {
+/* ===========================
+   GENERAL RESET
+=========================== */
+* {
+  box-sizing: border-box;
   margin: 0;
+  padding: 0;
   font-family: 'Arial', sans-serif;
-  background: var(--background);
-  color: var(--text-color);
 }
 
-/* ===== TOP NAV ===== */
+body {
+  background: linear-gradient(135deg, #2b2f45, #3b3f60);
+  color: white;
+  min-height: 100vh;
+}
+
+/* ===========================
+   TOP NAVIGATION
+=========================== */
 .top-nav {
-  background: var(--background);
-  padding: 10px 20px;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid #1a2238;
+  justify-content: space-between;
+  padding: 12px 24px;
+  background: #1c1f2e;
+  border-bottom: 2px solid #5865f2;
 }
 
 .top-nav .logo img {
-  height: 50px;
-  width: auto;
+  height: 60px;
 }
 
-/* ===== LAYOUT ===== */
-.layout {
-  display: flex;
-  gap: 20px;
-  padding: 20px;
-}
-
-/* ===== LEFT MENU ===== */
-.left-menu {
-  width: 220px;
-  background: #0f1426;
-  border-radius: 14px;
-  padding: 15px;
-  border: 1px solid #1a2238;
-  height: fit-content;
-  position: sticky;
-  top: 120px;
-}
-
-.left-menu h3 {
-  text-align: center;
-  margin-top: 0;
-  margin-bottom: 15px;
-  font-size: 1.2rem;
-}
-
-.left-menu button {
-  box-sizing: border-box;
-  width: 100%;
-  margin-bottom: 10px;
-  padding: 10px;
-  background: var(--card-bg);
-  border: 1px solid #1a2238;
-  color: var(--text-color);
-  border-radius: 8px;
+.login-btn {
+  background: #5865f2;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: 0.2s;
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
-.left-menu button:hover {
-  border-color: var(--accent-blue);
-  transform: translateX(4px);
+.login-btn:hover {
+  opacity: 0.9;
 }
 
-/* Search inside left menu */
-.menu-search {
-  box-sizing: border-box;
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0 15px 0; /* spacing from MENU and buttons */
-  border-radius: 8px;
-  border: 1px solid #1a2238;
-  background: var(--card-bg);
-  color: var(--text-color);
-  font-size: 0.9rem;
+/* ===========================
+   HOME MAIN / GAMES
+=========================== */
+.home-main {
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
 }
 
-.menu-search::placeholder {
-  color: var(--secondary-color);
+.hot-games-title {
+  font-size: 2rem;
+  margin-bottom: 16px;
+  color: #7a8cff;
+  text-align: center;
+  text-shadow: 0 0 10px #7a8cff;
 }
 
-.menu-search:focus {
-  outline: none;
-  border-color: var(--accent-blue);
-}
-
-/* ===== MAIN CONTENT ===== */
-.content {
-  flex: 1;
-}
-
-/* Section titles */
-.section-title {
-  font-size: 1.3rem;
-  margin-bottom: 12px;
-  color: var(--accent-blue);
-}
-
-/* ===== GAME GRID ===== */
-.game-list {
+.games-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 16px;
+  justify-content: center;
 }
 
-/* Game cards */
 .game-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-decoration: none;
-  color: var(--text-color);
-  background: var(--card-bg);
+  background: #1c1f2e;
   border-radius: 12px;
   padding: 10px;
-  width: 140px;
-  transition: transform 0.2s, box-shadow 0.2s;
-  position: relative;
+  width: 180px;
+  text-align: center;
+  color: white;
+  transition: transform 0.2s;
+}
+
+.game-card:hover {
+  transform: translateY(-5px);
 }
 
 .game-card img {
   width: 100%;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 5px;
+  border-radius: 10px;
+  margin-bottom: 8px;
 }
 
-.game-card span {
-  font-size: 0.85rem;
-  text-align: center;
+.game-card h3 {
+  font-size: 1rem;
+  margin-bottom: 8px;
 }
 
-/* Hover effect */
-.game-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 10px rgba(100, 100, 255, 0.4);
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
 }
 
-/* New badge */
-.new-badge {
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  background: var(--accent-blue);
-  color: #fff;
-  font-size: 0.65rem;
-  padding: 2px 5px;
-  border-radius: 5px;
-}
-
-/* Favorite star */
-.fav-star {
-  position: absolute;
-  top: 5px;
-  right: 5px;
+.play-btn, .fav-btn {
   cursor: pointer;
-  font-size: 0.8rem;
-}
-
-/* ===== HERO LOGO ===== */
-.hero-logo-container {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 20px;
-}
-
-.hero-logo {
-  height: 50px;
-  width: auto;
-}
-
-.site-tagline {
-  font-size: 1.1rem;
-  color: var(--secondary-color);
-}
-
-/* ===== FOOTER ===== */
-.footer {
-  text-align: center;
-  padding: 15px 0;
-  border-top: 1px solid #1a2238;
-  font-size: 0.85rem;
-}
-
-.footer a {
-  color: var(--accent-blue);
-  text-decoration: none;
-}
-
-.footer a:hover {
-  text-decoration: underline;
-}
-
-/* ===== GAME PAGE LAYOUT ===== */
-
-.game-topbar {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  padding: 10px 20px;
-  border-bottom: 1px solid #1a2238;
-}
-
-.game-topbar img {
-  height: 40px;
-}
-
-.game-layout {
-  display: flex;
-  gap: 20px;
-  padding: 20px;
-}
-
-.game-player-container {
-  flex: 1;
-}
-
-.game-frame {
-  width: 100%;
-  height: 70vh;
   border: none;
-  border-radius: 12px;
-  background: #000;
-}
-
-
-
-.player-controls {
-  margin-top: 10px;
-}
-
-.player-controls button {
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: 1px solid #1a2238;
-  background: #12182a;
-  color: white;
-  cursor: pointer;
-}
-
-.sidebar {
-  width: 220px;
-}
-
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-}
-
-.sidebar li {
-  margin-bottom: 10px;
-}
-
-.sidebar img {
-  width: 100%;
-  border-radius: 6px;
-}
-
-#game-name {
-  font-size: 1.2rem;
-}
-
-.thumb-wrap {
-  width: 100%;
-  height: 80px;
-  background: #0f1426;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.thumb-wrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.sidebar-game {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  text-decoration: none;
-  color: white;
-  font-size: 0.9rem;
-}
-
-.sidebar-game img {
-  width: 60px;
-  height: 40px;
-  object-fit: cover;
-  border-radius: 6px;
-}
-
-.top-nav {
-  display: flex;
-  align-items: center;
-  padding: 10px 20px;
-}
-
-.logo img {
-  height: 48px;
-}
-
-.login-btn {
-  margin-left: auto;
-  padding: 8px 14px;
-  background: #1a2238;
-  border: 1px solid #2b3558;
-  color: white;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.9rem;
-}
-
-.login-btn:hover {
-  background: #222c4a;
-}
-
-.auth-box {
-  margin-left: auto;
-  display: flex;
-  gap: 6px;
-  align-items: center;
-}
-
-.auth-box input {
-  padding: 6px;
-  border-radius: 6px;
-  border: none;
-  font-size: 0.8rem;
-}
-
-.auth-box button {
   padding: 6px 10px;
   border-radius: 6px;
-  border: none;
-  cursor: pointer;
+  font-size: 0.9rem;
 }
 
+.play-btn {
+  background: #5865f2;
+  color: white;
+}
+
+.fav-btn {
+  background: #2b2f45;
+  color: white;
+}
+
+.play-btn:hover {
+  opacity: 0.9;
+}
+
+.fav-btn:hover {
+  opacity: 0.9;
+}
+
+/* ===========================
+   GAME IFRAME
+=========================== */
+.game-frame {
+  width: 100%;
+  height: 100vh;
+  border: none;
+}
+
+/* ===========================
+   AUTH MODAL
+=========================== */
 .auth-modal {
   position: fixed;
   inset: 0;
@@ -379,6 +165,10 @@ body {
   border: none;
   background: #2b2f45;
   color: white;
+}
+
+.auth-content input::placeholder {
+  color: #aaa;
 }
 
 .auth-content button {
@@ -410,4 +200,6 @@ body {
 .auth-message {
   font-size: 0.8rem;
   color: #ff6b6b;
+  margin-top: 6px;
+  text-align: center;
 }
