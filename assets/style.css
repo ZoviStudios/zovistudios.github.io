@@ -329,3 +329,24 @@ body {
 .login-btn:hover {
   background: #222c4a;
 }
+
+.auth-box {
+  margin-left: auto;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.auth-box input {
+  padding: 6px;
+  border-radius: 6px;
+  border: none;
+  font-size: 0.8rem;
+}
+
+.auth-box button {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
