@@ -1,210 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zovi Games</title>
-<link rel="stylesheet" href="assets/style.css">
-<link rel="icon" href="assets/favicon.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Play Game</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- Top bar (small, clean) -->
-<header class="game-topbar">
-  <a href="index.html" class="game-logo">
-    <img src="assets/logo.png" alt="Zovi Games">
-  </a>
-  <h2 id="game-name"></h2>
-  <div class="auth-box">
-  <input type="text" id="username" placeholder="Username">
-  <input type="email" id="email" placeholder="Email">
-  <input type="password" id="password" placeholder="Password">
-  <button onclick="register()">Register</button>
-  <button onclick="login()">Login</button>
-  <button onclick="logout()">Logout</button>
-  <span id="auth-status"></span>
-</div>
+  <!-- Top Navigation -->
+  <header class="top-nav">
+    <a href="index.html" class="logo">
+      <img src="./assets/logo.png" alt="Zovi Games">
+    </a>
+    <button id="open-auth" class="login-btn">Login</button>
+  </header>
 
-</header>
-
-<!-- Main game layout -->
-<main class="game-layout">
-
-  <!-- Game player -->
-  <div class="game-player-container">
+  <!-- Game Player -->
+  <main class="game-main">
     <iframe id="game-frame" class="game-frame"></iframe>
-</div>
+  </main>
 
+  <!-- AUTH MODAL (same as index) -->
+  <div id="auth-modal" class="auth-modal">
+    <div class="auth-content">
+      <span id="close-auth" class="close-auth">&times;</span>
+      <h2 id="auth-title">Login</h2>
 
-    <div class="player-controls">
-      <button onclick="goFullscreen()">⛶ Fullscreen</button>
+      <input type="text" id="auth-username" placeholder="Username (sign up only)">
+      <input type="email" id="auth-email" placeholder="Email">
+      <input type="password" id="auth-password" placeholder="Password">
+
+      <button id="auth-submit">Login</button>
+
+      <div class="auth-alt">
+        <button id="google-login">Continue with Google</button>
+        <div id="phone-container">
+          <div id="recaptcha-container"></div>
+          <input type="tel" id="phone-number" placeholder="Phone number">
+          <button id="phone-login">Login with Phone</button>
+        </div>
+      </div>
+
+      <p class="auth-switch">
+        Don't have an account? <span id="switch-auth">Sign up</span>
+      </p>
+
+      <p id="auth-message" class="auth-message"></p>
     </div>
   </div>
 
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <h3>More Games</h3>
-    <ul id="sidebar-list"></ul>
-  </aside>
+  <!-- Scripts -->
+  <script src="script.js"></script>
+  <script type="module">
+  // Firebase login popup script (same as index.html)
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    sendEmailVerification,
+    signInWithPopup,
+    GoogleAuthProvider,
+    RecaptchaVerifier,
+    signInWithPhoneNumber,
+    onAuthStateChanged,
+    signOut
+  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-</main>
+  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-<footer class="footer">
-  &copy; <span id="current-year"></span> Zovi Games
-</footer>
-
-<script src="assets/script.js"></script>
-
-<script>
-// Load correct game + title
-const params = new URLSearchParams(window.location.search);
-const gameFile = params.get("game");
-
-if (gameFile) {
-  fetch("games.json")
-    .then(res => res.json())
-    .then(games => {
-      const game = games.find(g => g.file === gameFile);
-      if (game) {
-        document.getElementById("game-frame").src = `games/${game.file}.html`;
-        document.title = `${game.name} 🕹️ Play Now at Zovi Games`;
-        document.getElementById("game-name").textContent = game.name;
-      }
-    });
-}
-
-// Fullscreen
-function goFullscreen() {
-  const iframe = document.getElementById("game-frame");
-  if (iframe.requestFullscreen) iframe.requestFullscreen();
-}
-</script>
-
-<script>
-function scaleGame() {
-  const iframe = document.getElementById("game-frame");
-
-  iframe.onload = () => {
-    const doc = iframe.contentWindow.document;
-
-    const style = doc.createElement("style");
-    style.innerHTML = `
-      html, body {
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        background: black;
-      }
-
-      body > * {
-        transform: scale(calc(min(100vw / 480, 100vh / 640)));
-        transform-origin: top left;
-      }
-    `;
-
-    doc.head.appendChild(style);
+  const firebaseConfig = {
+    apiKey: "AIzaSyCJRyyojM9gC4_YX-alWG_NPqIXFp4LgR8",
+    authDomain: "zovi-games.firebaseapp.com",
+    projectId: "zovi-games",
+    storageBucket: "zovi-games.firebasestorage.app",
+    messagingSenderId: "398543626097",
+    appId: "1:398543626097:web:aebb817c396ed2962460d0"
   };
-}
 
-scaleGame();
-</script>
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-<script>
-function applyUnityFix() {
-  const iframe = document.getElementById("game-frame");
+  let isLogin = true;
+  const modal = document.getElementById("auth-modal");
+  const openBtn = document.getElementById("open-auth");
+  const closeBtn = document.getElementById("close-auth");
+  const switchBtn = document.getElementById("switch-auth");
+  const title = document.getElementById("auth-title");
+  const submitBtn = document.getElementById("auth-submit");
+  const message = document.getElementById("auth-message");
+  const usernameInput = document.getElementById("auth-username");
 
-  iframe.onload = () => {
+  openBtn.onclick = () => modal.style.display = "flex";
+  closeBtn.onclick = () => modal.style.display = "none";
+
+  switchBtn.onclick = () => {
+    isLogin = !isLogin;
+    title.textContent = isLogin ? "Login" : "Sign Up";
+    submitBtn.textContent = isLogin ? "Login" : "Sign Up";
+    switchBtn.textContent = isLogin ? "Sign up" : "Login";
+    usernameInput.style.display = isLogin ? "none" : "block";
+  };
+
+  submitBtn.onclick = async () => {
+    const email = document.getElementById("auth-email").value;
+    const password = document.getElementById("auth-password").value;
+    const username = usernameInput.value;
+
     try {
-      const body = iframe.contentDocument.body;
-
-      const unityCanvas = body.querySelector("canvas");
-      if (!unityCanvas) return;
-
-      // If canvas is small → it's a Unity game
-      if (unityCanvas.width <= 500 && unityCanvas.height <= 700) {
-        unityCanvas.style.width = "100%";
-        unityCanvas.style.height = "100%";
-        unityCanvas.style.objectFit = "contain";
+      if (isLogin) {
+        await signInWithEmailAndPassword(auth, email, password);
+      } else {
+        const userCred = await createUserWithEmailAndPassword(auth, email, password);
+        await sendEmailVerification(userCred.user);
+        await setDoc(doc(db, "users", userCred.user.uid), {
+          username: username,
+          email: email
+        });
+        message.textContent = "Verification email sent! Check inbox.";
       }
-    } catch (e) {
-      // ignore cross-origin issues
+    } catch (err) {
+      message.textContent = err.message;
     }
   };
-}
 
-applyUnityFix();
-</script>
+  document.getElementById("google-login").onclick = async () => {
+    const provider = new GoogleAuthProvider();
+    await signInWithPopup(auth, provider);
+  };
 
-<!-- Login -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { 
-  getAuth, 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, 
-  signOut,
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-import { 
-  getFirestore, 
-  doc, 
-  setDoc, 
-  getDoc 
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCJRyyojM9gC4_YX-alWG_NPqIXFp4LgR8",
-  authDomain: "zovi-games.firebaseapp.com",
-  projectId: "zovi-games",
-  storageBucket: "zovi-games.firebasestorage.app",
-  messagingSenderId: "398543626097",
-  appId: "1:398543626097:web:aebb817c396ed2962460d0"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-window.register = async function () {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-  const username = document.getElementById("username").value;
-
-  const userCred = await createUserWithEmailAndPassword(auth, email, password);
-
-  await setDoc(doc(db, "users", userCred.user.uid), {
-    username: username,
-    email: email
+  window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+    size: 'normal'
   });
-};
 
-window.login = async function () {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+  document.getElementById("phone-login").onclick = async () => {
+    const phoneNumber = document.getElementById("phone-number").value;
+    const appVerifier = window.recaptchaVerifier;
+    const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, appVerifier);
+    const code = prompt("Enter SMS code");
+    await confirmationResult.confirm(code);
+  };
 
-  await signInWithEmailAndPassword(auth, email, password);
-};
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      openBtn.textContent = "Logout";
+      openBtn.onclick = () => signOut(auth);
+      modal.style.display = "none";
+    } else {
+      openBtn.textContent = "Login";
+      openBtn.onclick = () => modal.style.display = "flex";
+    }
+  });
+  </script>
 
-window.logout = async function () {
-  await signOut(auth);
-};
-
-onAuthStateChanged(auth, async (user) => {
-  const status = document.getElementById("auth-status");
-  if (!status) return;
-
-  if (user) {
-    const snap = await getDoc(doc(db, "users", user.uid));
-    const data = snap.data();
-    status.textContent = `Logged in as ${data.username}`;
-  } else {
-    status.textContent = "Not logged in";
-  }
-});
-</script>
-
-
-
+  <script src="game-script.js"></script>
 </body>
 </html>
