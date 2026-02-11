@@ -1,143 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zovi Games</title>
-
-<!-- Favicon -->
-<link rel="icon" href="./assets/favicon.png" type="image/png">
-
-<!-- Style -->
-<link rel="stylesheet" href="./assets/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zovi Games</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- Top Navigation -->
-<header class="top-nav">
-  <a href="index.html" class="logo">
-    <img src="./assets/logo.png" alt="Zovi Games">
-  </a>
+  <!-- Top Navigation -->
+  <header class="top-nav">
+    <a href="index.html" class="logo">
+      <img src="./assets/logo.png" alt="Zovi Games">
+    </a>
+    <button id="open-auth" class="login-btn">Login</button>
+  </header>
 
-  <div class="auth-box">
-  <input type="text" id="username" placeholder="Username">
-  <input type="email" id="email" placeholder="Email">
-  <input type="password" id="password" placeholder="Password">
-  <button onclick="register()">Register</button>
-  <button onclick="login()">Login</button>
-  <button onclick="logout()">Logout</button>
-  <span id="auth-status"></span>
-</div>
+  <!-- Main Section -->
+  <main class="home-main">
+    <h1 class="hot-games-title">🔥 HOT GAMES</h1>
+    <div class="games-container" id="games-container">
+      <!-- Game cards populated by script.js -->
+    </div>
+  </main>
 
-</header>
+  <!-- AUTH MODAL -->
+  <div id="auth-modal" class="auth-modal">
+    <div class="auth-content">
+      <span id="close-auth" class="close-auth">&times;</span>
+      <h2 id="auth-title">Login</h2>
 
+      <input type="text" id="auth-username" placeholder="Username (sign up only)">
+      <input type="email" id="auth-email" placeholder="Email">
+      <input type="password" id="auth-password" placeholder="Password">
 
-<!-- Main Layout -->
-<main class="layout">
+      <button id="auth-submit">Login</button>
 
-  <!-- Left Menu -->
-  <aside class="left-menu">
-    <h3>MENU</h3>
+      <div class="auth-alt">
+        <button id="google-login">Continue with Google</button>
+        <div id="phone-container">
+          <div id="recaptcha-container"></div>
+          <input type="tel" id="phone-number" placeholder="Phone number">
+          <button id="phone-login">Login with Phone</button>
+        </div>
+      </div>
 
-    <!-- Search -->
-    <input type="text" id="search-input" class="menu-search" placeholder="Search games...">
+      <p class="auth-switch">
+        Don't have an account? <span id="switch-auth">Sign up</span>
+      </p>
 
-    <!-- Core buttons -->
-    <button onclick="showHot()">🔥 Hot Games</button>
-    <button onclick="showRecent()">🕘 Recently Played</button>
-    <button onclick="showFavorites()">⭐ Favorites</button>
-    <button id="random-btn">🎲 Random Game</button>
-  </aside>
-
-  <!-- Main Content -->
-  <div class="content">
-    <!-- Section title -->
-    <h3 class="section-title" id="section-title">
-      ALL GAMES (<span id="game-count"></span>)
-    </h3>
-
-    <!-- Game grid -->
-    <div id="game-display" class="game-list"></div>
+      <p id="auth-message" class="auth-message"></p>
+    </div>
   </div>
-</main>
 
-<!-- Footer -->
-<footer class="footer">
-  <p>&copy; <span id="current-year"></span> Zovi Games | Contact: <a href="mailto:thearam@protonmail.com">thearam@protonmail.com</a></p>
-</footer>
+  <!-- Scripts -->
+  <script src="script.js"></script>
+  <script type="module">
+  // Firebase config and login popup script
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    sendEmailVerification,
+    signInWithPopup,
+    GoogleAuthProvider,
+    RecaptchaVerifier,
+    signInWithPhoneNumber,
+    onAuthStateChanged,
+    signOut
+  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-<!-- Script -->
-<script src="./assets/script.js"></script>
+  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-<!-- Login -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { 
-  getAuth, 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, 
-  signOut,
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  const firebaseConfig = {
+    apiKey: "AIzaSyCJRyyojM9gC4_YX-alWG_NPqIXFp4LgR8",
+    authDomain: "zovi-games.firebaseapp.com",
+    projectId: "zovi-games",
+    storageBucket: "zovi-games.firebasestorage.app",
+    messagingSenderId: "398543626097",
+    appId: "1:398543626097:web:aebb817c396ed2962460d0"
+  };
 
-import { 
-  getFirestore, 
-  doc, 
-  setDoc, 
-  getDoc 
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCJRyyojM9gC4_YX-alWG_NPqIXFp4LgR8",
-  authDomain: "zovi-games.firebaseapp.com",
-  projectId: "zovi-games",
-  storageBucket: "zovi-games.firebasestorage.app",
-  messagingSenderId: "398543626097",
-  appId: "1:398543626097:web:aebb817c396ed2962460d0"
-};
+  let isLogin = true;
+  const modal = document.getElementById("auth-modal");
+  const openBtn = document.getElementById("open-auth");
+  const closeBtn = document.getElementById("close-auth");
+  const switchBtn = document.getElementById("switch-auth");
+  const title = document.getElementById("auth-title");
+  const submitBtn = document.getElementById("auth-submit");
+  const message = document.getElementById("auth-message");
+  const usernameInput = document.getElementById("auth-username");
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+  openBtn.onclick = () => modal.style.display = "flex";
+  closeBtn.onclick = () => modal.style.display = "none";
 
-window.register = async function () {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-  const username = document.getElementById("username").value;
+  switchBtn.onclick = () => {
+    isLogin = !isLogin;
+    title.textContent = isLogin ? "Login" : "Sign Up";
+    submitBtn.textContent = isLogin ? "Login" : "Sign Up";
+    switchBtn.textContent = isLogin ? "Sign up" : "Login";
+    usernameInput.style.display = isLogin ? "none" : "block";
+  };
 
-  const userCred = await createUserWithEmailAndPassword(auth, email, password);
+  submitBtn.onclick = async () => {
+    const email = document.getElementById("auth-email").value;
+    const password = document.getElementById("auth-password").value;
+    const username = usernameInput.value;
 
-  await setDoc(doc(db, "users", userCred.user.uid), {
-    username: username,
-    email: email
+    try {
+      if (isLogin) {
+        await signInWithEmailAndPassword(auth, email, password);
+      } else {
+        const userCred = await createUserWithEmailAndPassword(auth, email, password);
+        await sendEmailVerification(userCred.user);
+        await setDoc(doc(db, "users", userCred.user.uid), {
+          username: username,
+          email: email
+        });
+        message.textContent = "Verification email sent! Check inbox.";
+      }
+    } catch (err) {
+      message.textContent = err.message;
+    }
+  };
+
+  document.getElementById("google-login").onclick = async () => {
+    const provider = new GoogleAuthProvider();
+    await signInWithPopup(auth, provider);
+  };
+
+  window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+    size: 'normal'
   });
-};
 
-window.login = async function () {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+  document.getElementById("phone-login").onclick = async () => {
+    const phoneNumber = document.getElementById("phone-number").value;
+    const appVerifier = window.recaptchaVerifier;
+    const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, appVerifier);
+    const code = prompt("Enter SMS code");
+    await confirmationResult.confirm(code);
+  };
 
-  await signInWithEmailAndPassword(auth, email, password);
-};
-
-window.logout = async function () {
-  await signOut(auth);
-};
-
-onAuthStateChanged(auth, async (user) => {
-  const status = document.getElementById("auth-status");
-  if (!status) return;
-
-  if (user) {
-    const snap = await getDoc(doc(db, "users", user.uid));
-    const data = snap.data();
-    status.textContent = `Logged in as ${data.username}`;
-  } else {
-    status.textContent = "Not logged in";
-  }
-});
-</script>
-
-  
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      openBtn.textContent = "Logout";
+      openBtn.onclick = () => signOut(auth);
+      modal.style.display = "none";
+    } else {
+      openBtn.textContent = "Login";
+      openBtn.onclick = () => modal.style.display = "flex";
+    }
+  });
+  </script>
 </body>
 </html>
