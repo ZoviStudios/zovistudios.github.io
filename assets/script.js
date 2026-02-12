@@ -5,56 +5,71 @@ function exists(id) {
   return document.getElementById(id) !== null;
 }
 
-// ===============================
-// LOAD GAMES ON INDEX PAGE
-// ===============================
-if (exists("games-container")) {
+// Detect if we are on game.html
+const params = new URLSearchParams(window.location.search);
+const selectedGame = params.get("game");
+
+if (selectedGame) {
+  // We are on game.html
   fetch("games.json")
     .then(res => res.json())
     .then(games => {
-      const container = document.getElementById("games-container");
+
+      const game = games.find(g => g.file === selectedGame);
+
+      if (!game) {
+        document.body.innerHTML = "<h1>Game not found</h1>";
+        return;
+      }
+
+      // Set page title
+      document.title = game.name + " 🕹️ Play Now | Zovi Games";
+
+      // Set visible title
+      const titleEl = document.getElementById("game-title");
+      if (titleEl) titleEl.textContent = game.name;
+
+      // Set iframe source
+      const frame = document.getElementById("game-frame");
+      if (frame) {
+        frame.src = `https://ozgames.io/${game.file}.embed`;
+      }
+
+    })
+    .catch(err => console.error("Failed to load games.json:", err));
+}
+
+
+// Detect if we are on index.html
+const container = document.getElementById("games-container");
+
+if (container) {
+  fetch("games.json")
+    .then(res => res.json())
+    .then(games => {
 
       games.forEach(game => {
+
         const card = document.createElement("div");
-        card.classList.add("game-card");
+        card.className = "game-card";
 
         card.innerHTML = `
-          <img src="${game.thumbnail}" alt="${game.title}">
-          <h3>${game.title}</h3>
+          <img src="${game.thumbnail}" alt="${game.name}">
+          <h3>${game.name}</h3>
+          ${game.hot ? '<span class="hot-badge">🔥 HOT</span>' : ''}
         `;
 
         card.onclick = () => {
-          window.location.href = `game.html?id=${game.id}`;
+          window.location.href = `game.html?game=${game.file}`;
         };
 
         container.appendChild(card);
       });
+
     })
-    .catch(err => console.error("Error loading games:", err));
+    .catch(err => console.error("Failed to load games.json:", err));
 }
 
-// ===============================
-// LOAD SINGLE GAME ON GAME PAGE
-// ===============================
-if (window.location.pathname.includes("game.html")) {
-  const params = new URLSearchParams(window.location.search);
-  const gameId = params.get("id");
-
-  fetch("games.json")
-    .then(res => res.json())
-    .then(games => {
-      const game = games.find(g => g.id === gameId);
-      if (!game) return;
-
-      if (exists("game-title")) {
-        document.getElementById("game-title").textContent = game.title;
-      }
-
-      if (exists("game-frame")) {
-        document.getElementById("game-frame").src = game.url;
-      }
-    });
-}
 
 // ===============================
 // LOGIN MODAL HANDLING
@@ -78,3 +93,5 @@ if (exists("loginBtn")) {
     }
   };
 }
+
+
