@@ -1,63 +1,80 @@
-// ==============================
-// Script.js - Zovi Games
-// ==============================
+// ===============================
+// SAFE ELEMENT CHECK HELPER
+// ===============================
+function exists(id) {
+  return document.getElementById(id) !== null;
+}
 
-const container = document.getElementById("games-container");
+// ===============================
+// LOAD GAMES ON INDEX PAGE
+// ===============================
+if (exists("games-container")) {
+  fetch("games.json")
+    .then(res => res.json())
+    .then(games => {
+      const container = document.getElementById("games-container");
 
-// Load games.json
-fetch("./games.json")
-  .then(res => {
-    if (!res.ok) throw new Error(`Failed to load games.json: ${res.status}`);
-    return res.json();
-  })
-  .then(games => {
-    games.forEach(game => {
-      const card = document.createElement("div");
-      card.className = "game-card";
+      games.forEach(game => {
+        const card = document.createElement("div");
+        card.classList.add("game-card");
 
-      // Inner HTML of each card
-      card.innerHTML = `
-        <img src="${game.thumbnail}" alt="${game.title}">
-        <h3>${game.title}</h3>
-        <div class="card-actions">
-          <a href="game.html?game=${encodeURIComponent(game.file)}" class="play-btn">Play</a>
-          <button class="fav-btn">❤</button>
-        </div>
-      `;
+        card.innerHTML = `
+          <img src="${game.thumbnail}" alt="${game.title}">
+          <h3>${game.title}</h3>
+        `;
 
-      container.appendChild(card);
+        card.onclick = () => {
+          window.location.href = `game.html?id=${game.id}`;
+        };
 
-      // Favorite button click
-      const favBtn = card.querySelector(".fav-btn");
-      favBtn.onclick = async () => {
-        if (!window.currentUser) {
-          alert("Login to save favorites!");
-          return;
-        }
+        container.appendChild(card);
+      });
+    })
+    .catch(err => console.error("Error loading games:", err));
+}
 
-        try {
-          await window.saveFavorite(game.file);
-          favBtn.textContent = "❤️"; // Mark as saved
-        } catch (err) {
-          console.error(err);
-        }
-      };
+// ===============================
+// LOAD SINGLE GAME ON GAME PAGE
+// ===============================
+if (window.location.pathname.includes("game.html")) {
+  const params = new URLSearchParams(window.location.search);
+  const gameId = params.get("id");
+
+  fetch("games.json")
+    .then(res => res.json())
+    .then(games => {
+      const game = games.find(g => g.id === gameId);
+      if (!game) return;
+
+      if (exists("game-title")) {
+        document.getElementById("game-title").textContent = game.title;
+      }
+
+      if (exists("game-frame")) {
+        document.getElementById("game-frame").src = game.url;
+      }
     });
-  })
-  .catch(err => console.error(err));
+}
 
-// ==============================
-// Optional: show favorites when user logs in
-// ==============================
-onAuthStateChanged(auth, async user => {
-  if (!user) return;
-  const favData = await window.getFavorites();
-  
-  document.querySelectorAll(".game-card").forEach(card => {
-    const playLink = card.querySelector(".play-btn").href;
-    const fileName = decodeURIComponent(playLink.split("?game=")[1]);
-    if (favData[fileName]) {
-      card.querySelector(".fav-btn").textContent = "❤️";
+// ===============================
+// LOGIN MODAL HANDLING
+// ===============================
+if (exists("loginBtn")) {
+  const loginBtn = document.getElementById("loginBtn");
+  const authModal = document.getElementById("authModal");
+  const closeAuth = document.getElementById("closeAuth");
+
+  loginBtn.onclick = () => {
+    authModal.style.display = "flex";
+  };
+
+  closeAuth.onclick = () => {
+    authModal.style.display = "none";
+  };
+
+  window.onclick = (e) => {
+    if (e.target === authModal) {
+      authModal.style.display = "none";
     }
-  });
-});
+  };
+}
