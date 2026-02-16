@@ -1,97 +1,101 @@
-// ===============================
-// SAFE ELEMENT CHECK HELPER
-// ===============================
-function exists(id) {
-  return document.getElementById(id) !== null;
-}
+document.addEventListener("DOMContentLoaded", function () {
 
-// Detect if we are on game.html
-const params = new URLSearchParams(window.location.search);
-const selectedGame = params.get("game");
+  // ===============================
+  // SAFE ELEMENT CHECK HELPER
+  // ===============================
+  function exists(id) {
+    return document.getElementById(id) !== null;
+  }
 
-if (selectedGame) {
-  // We are on game.html
-  fetch("games.json")
-    .then(res => res.json())
-    .then(games => {
+  // ===============================
+  // SINGLE GAME LOADER (game.html)
+  // ===============================
+  const urlParams = new URLSearchParams(window.location.search);
+  const selectedGame = urlParams.get("game");
 
-      const game = games.find(g => g.file === selectedGame);
+  if (selectedGame) {
+    fetch("games.json")
+      .then(res => res.json())
+      .then(games => {
 
-      if (!game) {
-        document.body.innerHTML = "<h1>Game not found</h1>";
-        return;
-      }
+        const game = games.find(g => g.file === selectedGame);
 
-      // Set page title
-      document.title = game.name + " 🕹️ Play Now | Zovi Games";
+        if (!game) {
+          document.body.innerHTML = "<h1>Game not found</h1>";
+          return;
+        }
 
-      // Set visible title
-      const titleEl = document.getElementById("game-title");
-      if (titleEl) titleEl.textContent = game.name;
+        // Set browser tab title
+        document.title = game.name + " 🕹️ Play Now | Zovi Games";
 
-      // Set iframe source
-      const frame = document.getElementById("game-frame");
-      if (frame) {
-        frame.src = `https://ozgames.io/${game.file}.embed`;
-      }
+        // Set visible title
+        const titleEl = document.getElementById("game-title");
+        if (titleEl) titleEl.textContent = game.name;
 
-    })
-    .catch(err => console.error("Failed to load games.json:", err));
-}
+        // Set iframe source
+        const frame = document.getElementById("game-frame");
+        if (frame) {
+          frame.src = `https://ozgames.io/${game.file}.embed`;
+        }
 
+      })
+      .catch(err => console.error("Failed to load games.json:", err));
+  }
 
-// Detect if we are on index.html
-const container = document.getElementById("games-container");
+  // ===============================
+  // GAME GRID LOADER (index.html)
+  // ===============================
+  const container = document.getElementById("games-container");
 
-if (container) {
-  fetch("games.json")
-    .then(res => res.json())
-    .then(games => {
+  if (container) {
+    fetch("games.json")
+      .then(res => res.json())
+      .then(games => {
 
-      games.forEach(game => {
+        games.forEach(game => {
 
-        const card = document.createElement("div");
-        card.className = "game-card";
+          const card = document.createElement("div");
+          card.className = "game-card";
 
-        card.innerHTML = `
-          <img src="${game.thumbnail}" alt="${game.name}">
-          <h3>${game.name}</h3>
-          ${game.hot ? '<span class="hot-badge">🔥 HOT</span>' : ''}
-        `;
+          card.innerHTML = `
+            <img src="${game.thumbnail}" alt="${game.name}">
+            <h3>${game.name}</h3>
+            ${game.hot ? '<span class="hot-badge">🔥 HOT</span>' : ''}
+          `;
 
-        card.onclick = () => {
-          window.location.href = `game.html?game=${game.file}`;
-        };
+          card.addEventListener("click", function () {
+            window.location.href = `game.html?game=${game.file}`;
+          });
 
-        container.appendChild(card);
-      });
+          container.appendChild(card);
+        });
 
-    })
-    .catch(err => console.error("Failed to load games.json:", err));
-}
+      })
+      .catch(err => console.error("Failed to load games.json:", err));
+  }
 
+  // ===============================
+  // LOGIN MODAL HANDLING
+  // ===============================
+  if (exists("loginBtn")) {
 
-// ===============================
-// LOGIN MODAL HANDLING
-// ===============================
-if (exists("loginBtn")) {
-  const loginBtn = document.getElementById("loginBtn");
-  const authModal = document.getElementById("authModal");
-  const closeAuth = document.getElementById("closeAuth");
+    const loginBtn = document.getElementById("loginBtn");
+    const authModal = document.getElementById("authModal");
+    const closeAuth = document.getElementById("closeAuth");
 
-  loginBtn.onclick = () => {
-    authModal.style.display = "flex";
-  };
+    loginBtn.addEventListener("click", function () {
+      authModal.style.display = "flex";
+    });
 
-  closeAuth.onclick = () => {
-    authModal.style.display = "none";
-  };
-
-  window.onclick = (e) => {
-    if (e.target === authModal) {
+    closeAuth.addEventListener("click", function () {
       authModal.style.display = "none";
-    }
-  };
-}
+    });
 
+    window.addEventListener("click", function (e) {
+      if (e.target === authModal) {
+        authModal.style.display = "none";
+      }
+    });
+  }
 
+});
